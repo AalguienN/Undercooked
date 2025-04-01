@@ -312,7 +312,7 @@ namespace Undercooked.Player
         {
             if (_isDashing)
             {
-                var currentVelocity = playerRigidbody.velocity.magnitude;
+                var currentVelocity = playerRigidbody.linearVelocity.magnitude;
 
                 var inputNormalized = _inputDirection.normalized;
                 if (inputNormalized == Vector3.zero)
@@ -320,11 +320,11 @@ namespace Undercooked.Player
                     inputNormalized = transform.forward;
                 }
 
-                playerRigidbody.velocity = inputNormalized * currentVelocity;
+                playerRigidbody.linearVelocity = inputNormalized * currentVelocity;
             }
             else
             {
-                playerRigidbody.velocity = _inputDirection.normalized * movementSpeed;
+                playerRigidbody.linearVelocity = _inputDirection.normalized * movementSpeed;
             }
         }
 
@@ -362,7 +362,7 @@ namespace Undercooked.Player
 
         private void TurnThePlayer()
         {
-            if (!(playerRigidbody.velocity.magnitude > 0.1f) || _inputDirection == Vector3.zero) return;
+            if (!(playerRigidbody.linearVelocity.magnitude > 0.1f) || _inputDirection == Vector3.zero) return;
 
             Quaternion newRotation = Quaternion.LookRotation(_inputDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 15f);
