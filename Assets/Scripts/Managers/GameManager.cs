@@ -92,7 +92,7 @@ namespace Undercooked.Managers
 
         private async Task GameLoop()
         {
-            await StartMainMenuAsync();  // maybe move this out to Start()
+            /*await StartMainMenuAsync();  // maybe move this out to Start()*/
             await StartLevelAsync(level1);
         }
 
@@ -128,7 +128,7 @@ namespace Undercooked.Managers
             Score = 0;
             _timeRemaining = levelData.durationTime;
             
-            await DisplayInitialNotifications();
+            /*await DisplayInitialNotifications();*/
             orderManager.Init(levelData);
 
             OnLevelStart?.Invoke();
@@ -138,7 +138,7 @@ namespace Undercooked.Managers
 
             inputController.OnStartPressedAtPlayer += HandlePausePressed;
             
-            await CountdownTimerAsync(_timeRemaining);
+            /*await CountdownTimerAsync(_timeRemaining);*/
         }
 
         private static void HandlePausePressed()
