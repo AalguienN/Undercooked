@@ -233,7 +233,7 @@ namespace Undercooked.Appliances
             if (Ingredients.Count == 0 || IsBurned) return;
             
             // after cook, we burn
-            if (IsCookFinished)
+            if (FunctionalityManager.Instance.foodBurning)
             {
                 _burnCoroutine = StartCoroutine(Burn());
                 return;
