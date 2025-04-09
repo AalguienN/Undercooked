@@ -134,17 +134,17 @@ namespace Undercooked.Player
         /// - pickupAction: int flag for pick up (nonzero triggers pick up).
         /// - interactAction: int flag for interact (nonzero triggers interact).
         /// </summary>
-        public void SetMLAgentInput(Vector2 moveInput, int dashAction, int pickupAction, int interactAction)
+        public void SetMLAgentInput(Vector2 moveInput, float dashInput, float pickupInput, float interactAction)
         {
             // Update movement direction from neural network output.
             _inputDirection = new Vector3(moveInput.x, 0f, moveInput.y);
 
             // Check and trigger individual actions.
-            if (dashAction >= 0.5f)
+            if (dashInput >= 0.5f)
             {
                 HandleDash();
             }
-            if (pickupAction >= .5f)
+            if (pickupInput >= .5f)
             {
                 HandlePickUp();
             }
