@@ -233,7 +233,7 @@ namespace Undercooked.Player
 
         private void Update()
         {
-            SetMLAgentInput(new Vector2(0, .05f), 0, 1, 1);
+            //SetMLAgentInput(new Vector2(0, .05f), 0, 1, 1);
             // Movement is driven externally via ML agent inputs.
             if (!_isActive) return;
         }

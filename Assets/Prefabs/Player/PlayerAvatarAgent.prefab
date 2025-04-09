@@ -62,6 +62,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8659293699807151593, guid: 3e3a7e6863bb3f6489e80c060fd01919, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8513009126616788125}
+    - targetCorrespondingSourceObject: {fileID: 8659293699807151593, guid: 3e3a7e6863bb3f6489e80c060fd01919, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1506377252422346537}
   m_SourcePrefab: {fileID: 100100000, guid: 3e3a7e6863bb3f6489e80c060fd01919, type: 3}
 --- !u!1 &1770946610066350478 stripped
 GameObject:
@@ -115,3 +118,18 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 100
+--- !u!114 &1506377252422346537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770946610066350478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  DecisionStep: 0
+  TakeActionsBetweenDecisions: 1
