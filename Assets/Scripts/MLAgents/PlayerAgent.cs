@@ -1,4 +1,8 @@
+using Undercooked.Model;
+using Undercooked.Player;
 using Unity.MLAgents;
+using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 using UnityEngine;
 
 namespace Undercooked
@@ -9,6 +13,14 @@ namespace Undercooked
         void Start()
         {
             
+        }
+
+        public override void CollectObservations(VectorSensor sensor) { 
+            
+        }
+
+        public override void OnActionReceived(ActionBuffers actions) { 
+        
         }
 
         // Update is called once per frame
