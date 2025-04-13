@@ -75,9 +75,10 @@ namespace Undercooked.Managers
                 Assert.IsNotNull(dishTray);
                 Assert.IsNotNull(orderManager);
                 Assert.IsNotNull(level1);
-                Assert.IsNotNull(cameraManager);
-                Assert.IsNotNull(inputController);
+            //Assert.IsNotNull(cameraManager);
+            //Assert.IsNotNull(inputController);
             #endif
+            _userPressedStart = true;
         }
 
         private async void Start()
@@ -123,7 +124,7 @@ namespace Undercooked.Managers
 
         private async Task StartLevelAsync(LevelData levelData)
         {
-            cameraManager.FocusFirstPlayer();
+            //cameraManager.FocusFirstPlayer();
             
             Score = 0;
             _timeRemaining = levelData.durationTime;

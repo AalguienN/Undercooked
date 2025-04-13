@@ -14,22 +14,26 @@ namespace Undercooked.UI
         
         private void Awake()
         {
+            /*
             cam = Camera.main;
 
             #if UNITY_EDITOR
                 Assert.IsNotNull(target);
                 Assert.IsNotNull(cam);
             #endif
+            */
         }
 
         private void LateUpdate()
         {
+            /*
             Vector3 position = cam.WorldToScreenPoint(target.position + offset);
             
             if (transform.position != position)
             {
                 transform.position = position;
             }
+            */
         }
         
     }

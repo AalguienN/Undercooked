@@ -11,6 +11,8 @@
     {
         public class PlayerAgent : Agent
         {
+            public bool actionDebug = true; 
+
             PlayerController player_controller;
 
             private float movementAction_x;
@@ -41,7 +43,8 @@
 
             public override void OnActionReceived(ActionBuffers actionBuffers)
             {
-                Debug.Log("ACTION!");
+                if (actionDebug)
+                    Debug.Log("ACTION!");
                 // Leer las acciones continuas
                 a_MoveX(actionBuffers.ContinuousActions[0]);
                 a_MoveY(actionBuffers.ContinuousActions[1]);
@@ -51,11 +54,36 @@
             }
 
             // Lo separo por si queremos hacer algo entre medias antes de actualizar el valor
-            private void a_MoveX(float value) { Debug.Log($"a_MoveX {value}");movementInput.x = value; }
-            private void a_MoveY(float value) { Debug.Log($"a_MoveY {value}");movementInput.y = value; }
-            private void a_Dash(float value) { Debug.Log($"a_Dash {value}");dashInput = value; }
-            private void a_Pickup(float value) { Debug.Log($"a_Pickup {value}");pickupInput = value; }
-            private void a_Interact(float value) { Debug.Log($"a_Interact {value}");interactionInput = value; }
+            private void a_MoveX(float value)    
+            { 
+                if(actionDebug)
+                    Debug.Log($"a_MoveX {value}");       
+                movementInput.x = value; 
+            }
+            private void a_MoveY(float value)    
+            { 
+                if(actionDebug) 
+                    Debug.Log($"a_MoveY {value}"); 
+                movementInput.y = value; 
+            }
+            private void a_Dash(float value)     
+            {
+                if (actionDebug)
+                    Debug.Log($"a_Dash {value}");        
+                dashInput = value; 
+            }
+            private void a_Pickup(float value)   
+            {
+                if (actionDebug)
+                    Debug.Log($"a_Pickup {value}");      
+                pickupInput = value; 
+            }
+            private void a_Interact(float value) 
+            {
+                if (actionDebug)
+                    Debug.Log($"a_Interact {value}");    
+                interactionInput = value; 
+            }
 
 
             // Update is called once per frame
