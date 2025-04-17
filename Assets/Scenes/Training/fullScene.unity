@@ -748,6 +748,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6077794765047738669, guid: 682e0d1081834534fb91467270f28017, type: 3}
   m_PrefabInstance: {fileID: 105763569}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &120484734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 120484735}
+  - component: {fileID: 120484736}
+  m_Layer: 0
+  m_Name: FuncionalityManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &120484735
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120484734}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2006660624}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &120484736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120484734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9b817179eab5a448884866268612b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodBurning: 1
+  _CuttingTraining: 0
 --- !u!1001 &136059317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3314,6 +3360,10 @@ PrefabInstance:
       propertyPath: m_BehaviorName
       value: cooking
       objectReference: {fileID: 0}
+    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: actionDebug
       value: 0
@@ -3322,9 +3372,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 960923748}
     - targetCorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       insertIndex: -1
       addedObject: {fileID: 960923746}
@@ -4277,20 +4324,6 @@ MonoBehaviour:
   burnRew: 0
   deliverRew: 0
   cleanRew: 0
---- !u!114 &960923748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960923739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9b817179eab5a448884866268612b53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foodBurning: 1
-  _CuttingTraining: 0
 --- !u!1 &992888520
 GameObject:
   m_ObjectHideFlags: 0
@@ -8148,6 +8181,7 @@ Transform:
   - {fileID: 794793583}
   - {fileID: 1492098561}
   - {fileID: 298180229}
+  - {fileID: 120484735}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2013951796 stripped

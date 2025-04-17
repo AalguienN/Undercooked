@@ -15,20 +15,6 @@ namespace Undercooked
         public float deliverRew = 0.0f;
         public float cleanRew = 0.0f;
 
-        // Awake is called when the script instance is being loaded.
-        private void Awake()
-        {
-            // If an instance already exists and it's not this, destroy this instance.
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            // Set the instance to this and optionally make it persist across scene loads.
-            Instance = this;
-        }
-
         // Example reward methods
         public void GiveReward(float r)
         {
