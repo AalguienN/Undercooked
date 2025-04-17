@@ -4,6 +4,7 @@ using System.Linq;
 using Lean.Transition;
 using Undercooked.Managers;
 using Undercooked.Model;
+using Undercooked.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Image = UnityEngine.UI.Image;
@@ -68,7 +69,10 @@ namespace Undercooked.Appliances
         // if there is a mixed soup (e.g. 2x onions 1x tomato) we can't pickup the soup (it's locked),
         // the only option is to trash it
         // we only deliver single ingredient soups
-        
+
+        public static event System.Action<CookingPot> OnCookFinished;
+        public static event System.Action<CookingPot> OnBurned;
+
         protected override void Awake()
         {
             base.Awake();
@@ -378,6 +382,7 @@ namespace Undercooked.Appliances
             // FX's
             warningPopup.enabled = false;
             IsBurned = true;
+            OnBurned?.Invoke(this);
             _inBurnProcess = false;
             _currentBurnTime = 0f;
             
@@ -385,7 +390,7 @@ namespace Undercooked.Appliances
             
             whiteSmoke.gameObject.SetActive(false);
             blackSmoke.gameObject.SetActive(true);
-             Debug.Log("[CookingPot] The food is burned!");
+            Debug.Log("[CookingPot] The food is burned!");
         }
         
         private void AnimateGreenCheck()
@@ -410,6 +415,7 @@ namespace Undercooked.Appliances
        
         private void TriggerSuccessfulCook()
         {
+            OnCookFinished?.Invoke(this);
             IsCookFinished = true;
             _currentCookTime = 0f;
             _burnCoroutine = StartCoroutine(Burn());
