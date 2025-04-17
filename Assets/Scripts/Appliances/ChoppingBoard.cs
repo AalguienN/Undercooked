@@ -18,7 +18,7 @@ namespace Undercooked.Appliances
         private Ingredient _ingredient;
         private bool _isChopping;
 
-        public delegate void ChoppingStatus(PlayerController playerController);
+        public delegate void ChoppingStatus(PlayerController playerController, bool completed);
         public static event ChoppingStatus OnChoppingStart;
         public static event ChoppingStatus OnChoppingStop;
 
@@ -59,15 +59,16 @@ namespace Undercooked.Appliances
 
         private void StartChopCoroutine()
         {
-            OnChoppingStart?.Invoke(LastPlayerControllerInteracting);
+            OnChoppingStart?.Invoke(LastPlayerControllerInteracting, false);
             _chopCoroutine = StartCoroutine(Chop());
         }
 
         private void StopChopCoroutine()
         {
-            OnChoppingStop?.Invoke(LastPlayerControllerInteracting);
+            if (_chopCoroutine == null) return;  
+            OnChoppingStop?.Invoke(LastPlayerControllerInteracting, false);
             _isChopping = false;
-            if (_chopCoroutine != null) StopCoroutine(_chopCoroutine);
+            if (_chopCoroutine != null) StopCoroutine(_chopCoroutine); 
         }
 
         public override void ToggleHighlightOff()
@@ -91,7 +92,7 @@ namespace Undercooked.Appliances
             slider.gameObject.SetActive(false);
             _isChopping = false;
             _chopCoroutine = null;
-            OnChoppingStop?.Invoke(LastPlayerControllerInteracting);
+            OnChoppingStop?.Invoke(LastPlayerControllerInteracting, true);
         }
         
         public override bool TryToDropIntoSlot(IPickable pickableToDrop)

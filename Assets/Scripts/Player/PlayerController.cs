@@ -113,16 +113,19 @@ namespace Undercooked.Player
             animator.SetBool(_isCleaningHash, false);
         }
 
-        private void HandleChoppingStart(PlayerController playerController)
+        private void HandleChoppingStart(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
             animator.SetBool(_isChoppingHash, true);
             knife.gameObject.SetActive(true);
         }
 
-        private void HandleChoppingStop(PlayerController playerController)
+        private void HandleChoppingStop(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
+            if (completed && TryGetComponent(out RewardSystem rs)) {
+                rs.CutReward();
+            }
             animator.SetBool(_isChoppingHash, false);
             knife.gameObject.SetActive(false);
         }
