@@ -101,15 +101,16 @@ namespace Undercooked.Player
             Sink.OnCleanStop -= HandleCleanStop;
         }
 
-        private void HandleCleanStart(PlayerController playerController)
+        private void HandleCleanStart(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
             animator.SetBool(_isCleaningHash, true);
         }
 
-        private void HandleCleanStop(PlayerController playerController)
+        private void HandleCleanStop(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
+            if (completed && TryGetComponent(out RewardSystem rs)) rs.CleanReward();
             animator.SetBool(_isCleaningHash, false);
         }
 
@@ -123,9 +124,7 @@ namespace Undercooked.Player
         private void HandleChoppingStop(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
-            if (completed && TryGetComponent(out RewardSystem rs)) {
-                rs.CutReward();
-            }
+            if (completed && TryGetComponent(out RewardSystem rs)) rs.CutReward();
             animator.SetBool(_isChoppingHash, false);
             knife.gameObject.SetActive(false);
         }

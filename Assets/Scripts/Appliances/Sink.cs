@@ -25,7 +25,7 @@ namespace Undercooked.Appliances
         private float _currentCleaningTime;
         private Coroutine _cleanCoroutine;
 
-        public delegate void CleanStatus(PlayerController playerController);
+        public delegate void CleanStatus(PlayerController playerController, bool completed);
         public static event CleanStatus OnCleanStart;
         public static event CleanStatus OnCleanStop;
         
@@ -128,8 +128,10 @@ namespace Undercooked.Appliances
                 StartCleanCoroutine();
                 yield break;
             }
-            
-            StopCleanCoroutine();
+
+            //StopCleanCoroutine();
+            OnCleanStop?.Invoke(LastPlayerControllerInteracting, true);
+            slider.gameObject.SetActive(false);
         }
         
         public override void ToggleHighlightOff()
@@ -140,13 +142,14 @@ namespace Undercooked.Appliances
         
         private void StartCleanCoroutine()
         {
-            OnCleanStart?.Invoke(LastPlayerControllerInteracting);
+            OnCleanStart?.Invoke(LastPlayerControllerInteracting, false);
             _cleanCoroutine = StartCoroutine(Clean());
         }
         
         private void StopCleanCoroutine()
         {
-            OnCleanStop?.Invoke(LastPlayerControllerInteracting);
+            if (_cleanCoroutine == null) return; //Evito duplicar evento
+            OnCleanStop?.Invoke(LastPlayerControllerInteracting, false);
             slider.gameObject.SetActive(false);
             if (_cleanCoroutine != null) StopCoroutine(_cleanCoroutine);
         }
