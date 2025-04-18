@@ -14,6 +14,7 @@
             public bool actionDebug = true; 
 
             PlayerController player_controller;
+            public ObjectRandomizer objectRandomizer;
 
             private float movementAction_x;
             private float movementAction_y;
@@ -34,10 +35,15 @@
             // Start is called once before the first execution of Update after the MonoBehaviour is created
             void Start()
             {
-            
+               // objectRandomizer.Randomice();
+            }
+            public override void OnEpisodeBegin()
+            {
+                objectRandomizer.Randomize();
             }
 
-            public override void CollectObservations(VectorSensor sensor) { 
+            public override void CollectObservations(VectorSensor sensor) 
+            { 
             
             }
 
