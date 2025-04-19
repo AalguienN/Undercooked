@@ -35,6 +35,9 @@ namespace Undercooked.Managers
         public delegate void OrderDelivered(Order order, int tipCalculated);
         public static event OrderDelivered OnOrderDelivered;
 
+        [HideInInspector] public List<Order> Orders { get => _orders; }
+        [HideInInspector] public int MaxConcurrentOrders { get => maxConcurrentOrders; }
+
         private Order GetOrderFromPool()
         {
             return _poolOrders.Count > 0 ? _poolOrders.Dequeue() : Instantiate(orderPrefab, transform);
