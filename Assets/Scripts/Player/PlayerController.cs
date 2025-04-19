@@ -91,8 +91,6 @@ namespace Undercooked.Player
             ChoppingBoard.OnChoppingStop += HandleChoppingStop;
             Sink.OnCleanStart += HandleCleanStart;
             Sink.OnCleanStop += HandleCleanStop;
-            CookingPot.OnCookFinished += HandleCookFinished;
-            CookingPot.OnBurned += HandleBurned;
         }
 
         private void UnsubscribeInteractableEvents()
@@ -101,8 +99,6 @@ namespace Undercooked.Player
             ChoppingBoard.OnChoppingStop -= HandleChoppingStop;
             Sink.OnCleanStart -= HandleCleanStart;
             Sink.OnCleanStop -= HandleCleanStop;
-            CookingPot.OnCookFinished -= HandleCookFinished;
-            CookingPot.OnBurned -= HandleBurned;
         }
 
         private void HandleCleanStart(PlayerController playerController, bool completed)
@@ -114,7 +110,6 @@ namespace Undercooked.Player
         private void HandleCleanStop(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
-            if (completed && TryGetComponent(out RewardSystem rs)) rs.CleanReward();
             animator.SetBool(_isCleaningHash, false);
         }
 
@@ -128,23 +123,8 @@ namespace Undercooked.Player
         private void HandleChoppingStop(PlayerController playerController, bool completed)
         {
             if (!Equals(playerController)) return;
-            if (completed && TryGetComponent(out RewardSystem rs)) rs.CutReward();
             animator.SetBool(_isChoppingHash, false);
             knife.gameObject.SetActive(false);
-        }
-
-        private void HandleCookFinished(CookingPot pot)
-        {
-            //Doy puntos a cualquier jugador
-            if (TryGetComponent(out RewardSystem rs))
-                rs.CookReward();          
-        }
-
-        private void HandleBurned(CookingPot pot)
-        {
-            //Penalizo a cualquier jugador
-            if (TryGetComponent(out RewardSystem rs))
-                rs.BurnReward();         
         }
 
         /// <summary>
