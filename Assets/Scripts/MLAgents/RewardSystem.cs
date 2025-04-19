@@ -3,6 +3,7 @@ using Undercooked.Appliances;
 using Undercooked.Model;
 using Undercooked.Player;
 using UnityEngine;
+using Undercooked.Managers;
 
 namespace Undercooked
 {
@@ -43,8 +44,8 @@ namespace Undercooked
             Sink.OnCleanStop += OnCleaned;
             CookingPot.OnCookFinished += OnCooked;
             CookingPot.OnBurned += OnBurned;
-            //OrderManager.OnDelivered += OnDelivered;
-            //OrderManager.OnExpired += OnExpired;
+            OrderManager.OnOrderDelivered += OnDelivered;
+            OrderManager.OnOrderExpired += OnExpired;
         }
         private void UnsubscribeRewardEvents()
         {
@@ -52,8 +53,8 @@ namespace Undercooked
             Sink.OnCleanStop -= OnCleaned;
             CookingPot.OnCookFinished -= OnCooked;
             CookingPot.OnBurned -= OnBurned;
-            //OrderManager.OnDelivered -= OnDelivered;
-            //OrderManager.OnExpired -= OnExpired;
+            OrderManager.OnOrderDelivered -= OnDelivered;
+            OrderManager.OnOrderExpired -= OnExpired;
         }
 
         void OnChopped(PlayerController pc, bool done)
@@ -76,14 +77,14 @@ namespace Undercooked
             Add(burnRew); //Cualquier jugador
         }
 
-        void OnDelivered(Order order, PlayerController pc)
+        void OnDelivered(Order order, int tip)
         {
-            if (pc == owner) Add(deliverRew);
+            Add(deliverRew);
         }
 
-        void OnExpired(Order order, PlayerController pc)
+        void OnExpired(Order order)
         {
-            if (pc == owner) Add(expiredRew);
+            Add(expiredRew);
         }
 
         // ─────────── añadir recompensa ───────────
@@ -91,7 +92,7 @@ namespace Undercooked
         {
             totalReward += value;
             agent?.AddReward(value);         // solo si este jugador es ML‑Agent
-            Console.WriteLine(totalReward);
+            Debug.Log(totalReward);
         }
 
 
