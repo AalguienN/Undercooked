@@ -2764,7 +2764,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530979830}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
@@ -2808,7 +2808,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530979830}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &530979834
 Camera:
   m_ObjectHideFlags: 0
@@ -5286,12 +5286,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf69287c1ac57fe47b494181224bc1b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalReward: 0
   cutRew: 0
   cookRew: 0
   burnRew: 0
-  deliverRew: 0
   cleanRew: 0
+  deliverRew: 0
+  expiredRew: 0
+  agent: {fileID: 0}
 --- !u!114 &960923754
 MonoBehaviour:
   m_ObjectHideFlags: 0
