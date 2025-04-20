@@ -10,6 +10,7 @@ namespace Undercooked
     public class RewardSystem : MonoBehaviour
     {
         [Header("Rewards")]
+        public float startCutRew = 0.0f;
         public float cutRew = 0.0f;
         public float cookRew = 0.0f;
         public float burnRew  = 0.0f;
@@ -46,6 +47,9 @@ namespace Undercooked
             CookingPot.OnBurned += OnBurned;
             OrderManager.OnOrderDelivered += OnDelivered;
             OrderManager.OnOrderExpired += OnExpired;
+
+            //Para orientar
+            ChoppingBoard.OnChoppingStart += OnStartChopping;
         }
         private void UnsubscribeRewardEvents()
         {
@@ -55,6 +59,13 @@ namespace Undercooked
             CookingPot.OnBurned -= OnBurned;
             OrderManager.OnOrderDelivered -= OnDelivered;
             OrderManager.OnOrderExpired -= OnExpired;
+
+            //Para orientar
+            ChoppingBoard.OnChoppingStart -= OnStartChopping;
+        }
+
+        void OnStartChopping(PlayerController pc, bool done) {
+            if (pc == owner) Add(startCutRew);
         }
 
         void OnChopped(PlayerController pc, bool done)

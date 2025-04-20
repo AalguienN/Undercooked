@@ -18,7 +18,9 @@ namespace Undercooked.Model
         public IngredientType Type => data.type;
         public Color BaseColor => data.baseColor;
 
-        [SerializeField] private IngredientStatus startingStatus = IngredientStatus.Raw; 
+        [SerializeField] private IngredientStatus startingStatus = IngredientStatus.Raw;
+
+        [SerializeField] private GameObject IconCameraProcessed;
 
         public float ProcessTime => data.processTime;
         public float CookTime => data.cookTime;
@@ -33,6 +35,8 @@ namespace Undercooked.Model
             _rigidbody = GetComponent<Rigidbody>();
             _collider = GetComponent<Collider>();
             Setup();
+
+            IconCameraProcessed.SetActive(false);
         }
 
         private void Setup()
@@ -69,6 +73,7 @@ namespace Undercooked.Model
         {
             Status = IngredientStatus.Processed;
             _meshFilter.mesh = data.processedMesh;
+            IconCameraProcessed.SetActive(true);
         }
 
         public void ChangeToCooked()

@@ -4027,6 +4027,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1882227829}
     m_Modifications:
+    - target: {fileID: 658983158011192564, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: m_ObservationStacks
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: m_Name
       value: PlayerAvatarAgent
@@ -4075,25 +4079,33 @@ PrefabInstance:
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 22
       objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: cutRew
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: cookRew
+    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: m_BrainParameters.NumStackedVectorObservations
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: cutRew
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: burnRew
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: cookRew
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: cleanRew
-      value: 5
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: deliverRew
-      value: 4
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: expiredRew
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: MaxStep
