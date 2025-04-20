@@ -20,6 +20,7 @@ namespace Undercooked.Model
 
         [SerializeField] private IngredientStatus startingStatus = IngredientStatus.Raw;
 
+        [SerializeField] private GameObject IconCamera;
         [SerializeField] private GameObject IconCameraProcessed;
 
         public float ProcessTime => data.processTime;
@@ -89,6 +90,10 @@ namespace Undercooked.Model
         public void SetMeshRendererEnabled(bool enable)
         {
             _meshRenderer.enabled = enable;
+            IconCamera.SetActive(enable);
+            if (Status == IngredientStatus.Processed)
+                IconCameraProcessed.SetActive(enable);
+            else IconCameraProcessed.SetActive(false);
         }
 
         public override bool TryToDropIntoSlot(IPickable pickableToDrop)
