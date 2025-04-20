@@ -25,9 +25,9 @@ namespace Undercooked
         private float interactionAction;
 
         private Vector2 movementInput;
-        private float dashInput;
-        private float pickupInput;
-        private float interactionInput;
+        private bool dashInput;
+        private bool pickupInput;
+        private bool interactionInput;
 
         private OrderManager OM;
 
@@ -51,8 +51,8 @@ namespace Undercooked
         {
             //Necesita 
 
-            // Observation 1 (Espacio 2): Posición del agente en el mundo:
-            // En el futuro quizá estaría mejor con posiciones relativas si queremos entrenar varios a la vez
+            // Observation 1 (Espacio 2): Posiciï¿½n del agente en el mundo:
+            // En el futuro quizï¿½ estarï¿½a mejor con posiciones relativas si queremos entrenar varios a la vez
             // Pero si hacemos eso tendremos que tocar varios managers.... igual no interesa
             Vector3 pos = transform.position;
             sensor.AddObservation(pos.x);
@@ -60,7 +60,7 @@ namespace Undercooked
 
             //Observation 2 (Espacio 20): Lista de orders
             //En principio solo puede haber 5 a la vez...
-            //pero si se añadieran más hay que tener en cuenta que hay que cambiar el vector a N * 4
+            //pero si se aï¿½adieran mï¿½s hay que tener en cuenta que hay que cambiar el vector a N * 4
             var orders = OM.Orders;   // crea un getter que devuelva la lista
             int slots = OM.MaxConcurrentOrders;
 
@@ -95,9 +95,9 @@ namespace Undercooked
             // Leer las acciones continuas
             a_MoveX(actionBuffers.ContinuousActions[0]);
             a_MoveY(actionBuffers.ContinuousActions[1]);
-            a_Dash(actionBuffers.ContinuousActions[2]);
-            a_Pickup(actionBuffers.ContinuousActions[3]);
-            a_Interact(actionBuffers.ContinuousActions[4]);
+            a_Dash(actionBuffers.DiscreteActions[0]);
+            a_Pickup(actionBuffers.DiscreteActions[1]);
+            a_Interact(actionBuffers.DiscreteActions[2]);
         }
 
         // Lo separo por si queremos hacer algo entre medias antes de actualizar el valor
@@ -113,25 +113,29 @@ namespace Undercooked
                 Debug.Log($"a_MoveY {value}"); 
             movementInput.y = value; 
         }
-        private void a_Dash(float value)     
+        private void a_Dash(int value)     
         {
             if (actionDebug)
                 Debug.Log($"a_Dash {value}");        
-            dashInput = value; 
+            dashInput = value == 1; 
         }
-        private void a_Pickup(float value)   
+        private void a_Pickup(int value)   
         {
             if (actionDebug)
                 Debug.Log($"a_Pickup {value}");      
-            pickupInput = value; 
+            pickupInput = value == 1; 
         }
-        private void a_Interact(float value) 
+        private void a_Interact(int value) 
         {
             if (actionDebug)
                 Debug.Log($"a_Interact {value}");    
-            interactionInput = value; 
+            interactionInput = value == 1; 
         }
 
+        public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
+        {
+            actionMask.SetActionEnabled(0, 0, player_controller.isDashingPossible);
+        }
 
         // Update is called once per frame
         void Update()

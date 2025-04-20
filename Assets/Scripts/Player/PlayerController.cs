@@ -28,7 +28,7 @@ namespace Undercooked.Player
         // Dashing
         [SerializeField] private float dashForce = 900f;
         private bool _isDashing = false;
-        private bool _isDashingPossible = true;
+        public bool isDashingPossible = true;
         private readonly WaitForSeconds _dashDuration = new WaitForSeconds(0.17f);
         private readonly WaitForSeconds _dashCooldown = new WaitForSeconds(0.07f);
 
@@ -134,21 +134,21 @@ namespace Undercooked.Player
         /// - pickupAction: int flag for pick up (nonzero triggers pick up).
         /// - interactAction: int flag for interact (nonzero triggers interact).
         /// </summary>
-        public void SetMLAgentInput(Vector2 moveInput, float dashInput, float pickupInput, float interactAction)
+        public void SetMLAgentInput(Vector2 moveInput, bool dashInput, bool pickupInput, bool interactAction)
         {
             // Update movement direction from neural network output.
             _inputDirection = new Vector3(moveInput.x, 0f, moveInput.y);
 
             // Check and trigger individual actions.
-            if (dashInput >= 0.5f)
+            if (dashInput)
             {
                 HandleDash();
             }
-            if (pickupInput >= .5f)
+            if (pickupInput)
             {
                 HandlePickUp();
             }
-            if (interactAction >= .05f)
+            if (interactAction)
             {
                 HandleInteract();
             }
@@ -156,13 +156,13 @@ namespace Undercooked.Player
 
         public void HandleDash()
         {
-            if (!_isDashingPossible) return;
+            if (!isDashingPossible) return;
             StartCoroutine(Dash());
         }
 
         private IEnumerator Dash()
         {
-            _isDashingPossible = false;
+            isDashingPossible = false;
             playerRigidbody.AddRelativeForce(dashForce * Vector3.forward);
             dashParticle.Play();
             dashParticle.PlaySoundTransition(dashAudio);
@@ -172,7 +172,7 @@ namespace Undercooked.Player
             yield return _dashDuration;
             _isDashing = false;
             yield return _dashCooldown;
-            _isDashingPossible = true;
+            isDashingPossible = true;
         }
 
         public void HandlePickUp()
