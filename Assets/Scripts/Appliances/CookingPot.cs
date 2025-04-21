@@ -306,8 +306,8 @@ namespace Undercooked.Appliances
             }
 
             // Debug.Log("[CookingPot] Finish partial cooking");
-            
-            _burnCoroutine = StartCoroutine(Burn());
+            if(false)
+                _burnCoroutine = StartCoroutine(Burn());
         }
 
         private IEnumerator Burn()

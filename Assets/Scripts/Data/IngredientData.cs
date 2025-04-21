@@ -7,7 +7,7 @@ namespace Undercooked.Data
     public class IngredientData : ScriptableObject
     {
         public IngredientType type;
-        public float processTime = 7.4f;
+        public float processTime = 2f;
         public float cookTime = 6f;
         
         [Header("Visuals")]

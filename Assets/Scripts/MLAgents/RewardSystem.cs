@@ -96,6 +96,7 @@ namespace Undercooked
         void OnExpired(Order order)
         {
             Add(expiredRew);
+            agent.OrderFailed();
         }
 
         // ─────────── añadir recompensa ───────────

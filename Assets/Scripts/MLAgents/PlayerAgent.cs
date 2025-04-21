@@ -30,6 +30,9 @@ namespace Undercooked
         private bool interactionInput;
 
         private OrderManager OM;
+        private bool endEpisode => orderFailedToReset == ordersFailed;
+        private int orderFailedToReset = 20;
+        private int ordersFailed = 0;
 
         private void Awake()
         {
@@ -95,9 +98,9 @@ namespace Undercooked
             // Leer las acciones continuas
             a_MoveX(actionBuffers.ContinuousActions[0]);
             a_MoveY(actionBuffers.ContinuousActions[1]);
-            a_Dash(actionBuffers.DiscreteActions[0]);
-            a_Pickup(actionBuffers.DiscreteActions[1]);
-            a_Interact(actionBuffers.DiscreteActions[2]);
+            a_Dash(actionBuffers.ContinuousActions[2]);
+            a_Pickup(actionBuffers.ContinuousActions[3]);
+            a_Interact(actionBuffers.ContinuousActions[4]);
         }
 
         // Lo separo por si queremos hacer algo entre medias antes de actualizar el valor
@@ -113,23 +116,23 @@ namespace Undercooked
                 Debug.Log($"a_MoveY {value}"); 
             movementInput.y = value; 
         }
-        private void a_Dash(int value)     
+        private void a_Dash(float value)     
         {
             if (actionDebug)
                 Debug.Log($"a_Dash {value}");        
-            dashInput = value == 1; 
+            dashInput = value >= 0.5; 
         }
-        private void a_Pickup(int value)   
+        private void a_Pickup(float value)   
         {
             if (actionDebug)
                 Debug.Log($"a_Pickup {value}");      
-            pickupInput = value == 1; 
+            pickupInput = value >= 0.5; 
         }
-        private void a_Interact(int value) 
+        private void a_Interact(float value) 
         {
             if (actionDebug)
                 Debug.Log($"a_Interact {value}");    
-            interactionInput = value == 1; 
+            interactionInput = value >= 0.5; 
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
@@ -137,10 +140,21 @@ namespace Undercooked
             actionMask.SetActionEnabled(0, 0, player_controller.isDashingPossible);
         }
 
+        public void OrderFailed()
+        {
+            ordersFailed++;
+        }
+
         // Update is called once per frame
         void Update()
         {
             player_controller.SetMLAgentInput(movementInput, dashInput, pickupInput,interactionInput);
+            if (endEpisode)
+            {
+                ordersFailed = 0;
+                EndEpisode();
+            }
+
         }
     }
 }

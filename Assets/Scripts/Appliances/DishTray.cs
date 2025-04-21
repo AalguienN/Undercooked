@@ -30,6 +30,7 @@ namespace Undercooked.Appliances
             plate.transform.SetParent(topPileSlot);
             plate.transform.SetPositionAndRotation(topPileSlot.transform.position, Quaternion.identity);
             _dirtyPlates.Add(plate);
+            plate.SetClean();
         }
     }
 }
