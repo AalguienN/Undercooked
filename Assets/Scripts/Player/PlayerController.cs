@@ -50,6 +50,9 @@ namespace Undercooked.Player
         [SerializeField] private AudioClip pickupAudio;
         [SerializeField] private AudioClip dropAudio;
 
+        public IPickable HeldObject => _currentPickable;
+
+
         public void Reset()
         {
             _currentPickable = null;

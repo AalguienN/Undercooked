@@ -10,6 +10,8 @@ namespace Undercooked.Appliances
         private Animator _animator;
         private static readonly int OpenHash = Animator.StringToHash("Open");
 
+        public IngredientType type;
+
         protected override void Awake()
         {
             base.Awake();
