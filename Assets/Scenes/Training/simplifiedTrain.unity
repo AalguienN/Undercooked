@@ -2051,10 +2051,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 658983158011192564, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_ObservationStacks
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: m_Name
       value: PlayerAvatarAgent
@@ -2099,85 +2095,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1831281222266788740, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_BrainParameters.VectorActionSpaceType
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_BrainParameters.VectorActionSize.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_BrainParameters.NumStackedVectorObservations
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: 'm_BrainParameters.VectorActionSize.Array.data[0]'
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_BrainParameters.m_ActionSpec.m_NumContinuousActions
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: 'm_BrainParameters.m_ActionSpec.BranchSizes.Array.data[1]'
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: 'm_BrainParameters.m_ActionSpec.BranchSizes.Array.data[2]'
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3909803342850324520, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: agent
-      value: 
-      objectReference: {fileID: 847311938}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: cutRew
-      value: 5000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: burnRew
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: cookRew
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: cleanRew
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: deliverRew
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: expiredRew
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: startCutRew
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      propertyPath: MaxStep
-      value: 1000
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: objectRandomizer
@@ -2186,101 +2106,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 847311941}
-    - targetCorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 847311940}
-    - targetCorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 847311939}
-    - targetCorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 847311942}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
 --- !u!4 &847311934 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1770946610066350479, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
   m_PrefabInstance: {fileID: 847311933}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &847311935 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1770946610066350478, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-  m_PrefabInstance: {fileID: 847311933}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &847311938 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-  m_PrefabInstance: {fileID: 847311933}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847311935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62eca0e9b8c953746b54692ba73ed29d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &847311939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847311935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8012d5925524537b27131fef517017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: OrderBuffer
-  m_ObservableSize: 4
-  m_MaxNumObservables: 20
---- !u!114 &847311940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847311935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8012d5925524537b27131fef517017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: PlatesSensor
-  m_ObservableSize: 5
-  m_MaxNumObservables: 2
---- !u!114 &847311941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847311935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8012d5925524537b27131fef517017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: IngredientesSensor
-  m_ObservableSize: 5
-  m_MaxNumObservables: 20
---- !u!114 &847311942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847311935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8012d5925524537b27131fef517017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: IngredientCrateBuffer
-  m_ObservableSize: 3
-  m_MaxNumObservables: 2
 --- !u!1 &887785221
 GameObject:
   m_ObjectHideFlags: 0
