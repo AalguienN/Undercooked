@@ -38,6 +38,18 @@ namespace Undercooked.Managers
         [HideInInspector] public List<Order> Orders { get => _orders; }
         [HideInInspector] public int MaxConcurrentOrders { get => maxConcurrentOrders; }
 
+        public void Reset()
+        {
+            //Orders.Clear();
+            for (int i = 0; i < Orders.Count(); i++) {
+                DeactivateSendBackToPool(Orders[i]);
+            }
+            //StopAllCoroutines();
+            //Init(currentLevel);
+            //StopAndClear();
+            //_generatorCoroutine = StartCoroutine(OrderGeneratorCoroutine());
+        }
+
         private Order GetOrderFromPool()
         {
             return _poolOrders.Count > 0 ? _poolOrders.Dequeue() : Instantiate(orderPrefab, transform);

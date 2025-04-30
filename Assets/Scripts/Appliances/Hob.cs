@@ -5,8 +5,16 @@ namespace Undercooked.Appliances
 {
     public class Hob : Interactable
     {
+        private CookingPot cp;
+
+        public void Reset()
+        {
+            TryToDropIntoSlot(cp);
+        }
+
         private void Start()
         {
+            cp = Slot.GetChild(0).GetComponent<CookingPot>();
             var pan = CurrentPickable as CookingPot;
             pan?.DroppedIntoHob();
         }

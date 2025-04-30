@@ -73,6 +73,12 @@ namespace Undercooked.Appliances
         public static event System.Action<CookingPot> OnCookFinished;
         public static event System.Action<CookingPot> OnBurned;
 
+
+        public void Reset()
+        {
+            EmptyPan();
+        }
+
         protected override void Awake()
         {
             base.Awake();

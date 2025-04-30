@@ -134,10 +134,9 @@ namespace Undercooked.Managers
 
             OnLevelStart?.Invoke();
 
-            inputController.EnableGameplayControls();
-            inputController.EnableFirstPlayerController();
-
-            inputController.OnStartPressedAtPlayer += HandlePausePressed;
+            //inputController?.EnableGameplayControls();
+            //inputController?.EnableFirstPlayerController();
+            //inputController.OnStartPressedAtPlayer += HandlePausePressed;
             
             /*await CountdownTimerAsync(_timeRemaining);*/
         }

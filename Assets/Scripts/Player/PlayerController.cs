@@ -6,6 +6,7 @@ using Undercooked.UI;
 using UnityEngine;
 
 using Unity.MLAgents;
+using NUnit.Framework;
 
 namespace Undercooked.Player
 {
@@ -48,6 +49,11 @@ namespace Undercooked.Player
         [SerializeField] private AudioClip dashAudio;
         [SerializeField] private AudioClip pickupAudio;
         [SerializeField] private AudioClip dropAudio;
+
+        public void Reset()
+        {
+            _currentPickable = null;
+        }
 
         private void Awake()
         {

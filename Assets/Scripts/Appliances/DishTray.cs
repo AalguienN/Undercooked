@@ -9,6 +9,13 @@ namespace Undercooked.Appliances
     {
         private readonly List<Plate> _dirtyPlates = new List<Plate>();
 
+        public void Reset()
+        {
+            foreach (Plate p in GameObject.FindObjectsByType<Plate>(sortMode: FindObjectsSortMode.None)) {
+                AddDirtyPlate(p);
+            }
+        }
+
         public override bool TryToDropIntoSlot(IPickable pickableToDrop) => false;
 
         public override IPickable TryToPickUpFromSlot(IPickable playerHoldPickable)

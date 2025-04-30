@@ -8,6 +8,7 @@ using Unity.MLAgents.Sensors;
 using UnityEngine;
 using Undercooked.Managers;
 using NUnit.Framework.Interfaces;
+using Undercooked.Appliances;
 
 namespace Undercooked
 {
@@ -47,6 +48,26 @@ namespace Undercooked
         }
         public override void OnEpisodeBegin()
         {
+            GameObject.FindAnyObjectByType<OrderManager>().Reset();
+            foreach (Ingredient ing in GameObject.FindObjectsByType<Ingredient>(sortMode:FindObjectsSortMode.None)) {
+                Destroy(ing.gameObject);                
+            }
+            foreach (CookingPot cp in GameObject.FindObjectsByType<CookingPot>(sortMode: FindObjectsSortMode.None)) {
+                cp.Reset();
+            }
+            foreach (Hob h in GameObject.FindObjectsByType<Hob>(sortMode: FindObjectsSortMode.None)) {
+                h.Reset();
+            }
+            foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None)) {
+                cb.Reset();
+            }
+            GameObject.FindAnyObjectByType<DishTray>()?.Reset();
+
+            GetComponent<PlayerController>().Reset();
+
+            //foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None))
+            //foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None))
+
             objectRandomizer.Randomize();
         }
 
@@ -124,6 +145,7 @@ namespace Undercooked
         }
         private void a_Pickup(float value)   
         {
+            value = 0; // HEY BORRAR ESTA KK
             if (actionDebug)
                 Debug.Log($"a_Pickup {value}");      
             pickupInput = value >= 0.5; 

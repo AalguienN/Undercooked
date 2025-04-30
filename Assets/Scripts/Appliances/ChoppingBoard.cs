@@ -1,3 +1,4 @@
+using Lean.Transition;
 using System.Collections;
 using Undercooked.Model;
 using Undercooked.Player;
@@ -21,6 +22,18 @@ namespace Undercooked.Appliances
         public delegate void ChoppingStatus(PlayerController playerController, bool completed);
         public static event ChoppingStatus OnChoppingStart;
         public static event ChoppingStatus OnChoppingStop;
+
+        public GameObject Cebolla;
+
+        public void Reset()
+        {
+            slider.gameObject.SetActive(false);
+            _isChopping = false;
+            _chopCoroutine = null;
+            Destroy(CurrentPickable?.gameObject);
+            CurrentPickable = null;
+            TryToDropIntoSlot(Instantiate(Cebolla).GetComponent<Ingredient>());
+        }
 
         protected override void Awake()
         {
