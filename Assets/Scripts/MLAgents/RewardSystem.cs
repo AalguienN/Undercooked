@@ -17,6 +17,8 @@ namespace Undercooked
         public float cleanRew = 0.0f;
         public float deliverRew = 0.0f;
         public float expiredRew = 0.0f;
+        public int numberOfTooMuchFood = 0;
+        public float tooMuchFoodRew = 0.0f;
 
         public float totalReward { get; private set; }
 
@@ -37,6 +39,16 @@ namespace Undercooked
         void OnDisable()
         {
             UnsubscribeRewardEvents();
+        }
+
+        private void Update()
+        {
+            var ingredients = GameObject.FindObjectsByType<Ingredient>(sortMode: FindObjectsSortMode.None);
+            if (ingredients.Length > numberOfTooMuchFood)
+            {
+                agent?.AddReward(tooMuchFoodRew);
+            }
+            
         }
 
         private void SubscribeRewardEvents()
@@ -107,31 +119,5 @@ namespace Undercooked
             Debug.Log(totalReward);
         }
 
-
-        // Example reward methods
-        //public void GiveReward(float r)
-        //{
-        //    totalReward += r;
-        //}
-
-        //public void BurnReward()
-        //{
-        //    totalReward += burnRew;
-        //}
-
-        //public void CutReward()
-        //{
-        //    totalReward += cutRew;
-        //}
-
-        //public void CookReward()
-        //{ 
-        //    totalReward += cookRew;
-        //}
-
-        //public void CleanReward()
-        //{
-        //    totalReward += cleanRew;
-        //}
     }
 }
