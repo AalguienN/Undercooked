@@ -250,9 +250,6 @@ PrefabInstance:
       addedObject: {fileID: 7237457580692803893}
     - targetCorrespondingSourceObject: {fileID: 8659293699807151593, guid: 3e3a7e6863bb3f6489e80c060fd01919, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 658983158011192564}
-    - targetCorrespondingSourceObject: {fileID: 8659293699807151593, guid: 3e3a7e6863bb3f6489e80c060fd01919, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1725684755843660056}
     - targetCorrespondingSourceObject: {fileID: 8659293699807151593, guid: 3e3a7e6863bb3f6489e80c060fd01919, type: 3}
       insertIndex: -1
@@ -282,12 +279,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 5
+    VectorObservationSize: 16
     NumStackedVectorObservations: 2
     m_ActionSpec:
-      m_NumContinuousActions: 5
-      BranchSizes: 
-    VectorActionSize: 05000000
+      m_NumContinuousActions: 2
+      BranchSizes: 020000000200000002000000
+    VectorActionSize: 
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -349,31 +346,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf69287c1ac57fe47b494181224bc1b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startCutRew: 10
-  cutRew: 5000
-  cookRew: 0
-  burnRew: 0
+  startCutRew: 1
+  cutRew: 10
+  cookRew: 100
+  burnRew: -50
   cleanRew: 0
   deliverRew: 0
   expiredRew: 0
   agent: {fileID: 8513009126616788125}
---- !u!114 &658983158011192564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1770946610066350478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 132e1194facb64429b007ea1edf562d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RenderTexture: {fileID: 8400000, guid: eb2a71fb1f47fb4aa8fd978886af79d4, type: 2}
-  m_SensorName: RenderTextureSensor
-  m_Grayscale: 0
-  m_ObservationStacks: 50
-  m_Compression: 1
 --- !u!114 &1725684755843660056
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -59,15 +59,24 @@ namespace Undercooked.Model
         
         public void Pick()
         {
-            _rigidbody.isKinematic = true;
-            _collider.enabled = false;
+            // Only set isKinematic if the Rigidbody still exists
+            if (_rigidbody != null)
+                _rigidbody.isKinematic = true;
+            
+            // Only disable collider if it still exists
+            if (_collider != null)
+                _collider.enabled = false;
         }
         
         public void Drop()
         {
-            gameObject.transform.SetParent(null);
-            _rigidbody.isKinematic = false;
-            _collider.enabled = true;
+            // Similarly guard here as well
+            if (_rigidbody != null)
+                _rigidbody.isKinematic = false;
+            if (_collider != null)
+                _collider.enabled = true;
+
+            transform.SetParent(null);
         }
         
         public void ChangeToProcessed()

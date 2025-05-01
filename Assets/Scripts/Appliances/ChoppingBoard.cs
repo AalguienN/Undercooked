@@ -32,7 +32,7 @@ namespace Undercooked.Appliances
             _chopCoroutine = null;
             Destroy(CurrentPickable?.gameObject);
             CurrentPickable = null;
-            TryToDropIntoSlot(Instantiate(Cebolla).GetComponent<Ingredient>());
+            //TryToDropIntoSlot(Instantiate(Cebolla).GetComponent<Ingredient>());
         }
 
         protected override void Awake()

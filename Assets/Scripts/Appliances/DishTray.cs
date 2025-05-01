@@ -12,6 +12,7 @@ namespace Undercooked.Appliances
         public void Reset()
         {
             foreach (Plate p in GameObject.FindObjectsByType<Plate>(sortMode: FindObjectsSortMode.None)) {
+                p.gameObject.transform.localPosition = Vector3.zero;    
                 AddDirtyPlate(p);
             }
         }

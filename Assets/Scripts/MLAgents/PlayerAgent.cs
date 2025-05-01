@@ -14,13 +14,8 @@ namespace Undercooked
         public bool actionDebug = true; 
 
         PlayerController player_controller;
+        InteractableController interactable_controller;
         public ObjectRandomizer objectRandomizer;
-
-        private float movementAction_x;
-        private float movementAction_y;
-        private float dashAction;
-        private float pickupAction;
-        private float interactionAction;
 
         private Vector2 movementInput;
         private bool dashInput;
@@ -41,6 +36,8 @@ namespace Undercooked
         private void Awake()
         {
             player_controller = GetComponent<PlayerController>();
+            interactable_controller = GetComponentInChildren<InteractableController>();
+
             var buffers = GetComponents<BufferSensorComponent>();
             foreach (var b in buffers) {
                 switch (b.SensorName) {
@@ -118,6 +115,8 @@ namespace Undercooked
             sensor.AddObservation(pos.x);
             sensor.AddObservation(pos.z);
 
+            sensor.AddObservation(transform.rotation.y);
+
             //Observación 2 (espacio 2): Posición de dish tray en el mundo
             Vector3 DishTrayPos = FindFirstObjectByType<DishTray>().transform.position;
             sensor.AddObservation(DishTrayPos.x);
@@ -154,9 +153,14 @@ namespace Undercooked
                 sensor.AddObservation(Mathf.Clamp01(plate.Ingredients.Count / 3f)); // suponiendo máx 3
             }
             else if (carried is CookingPot pot) { // Observamos olla: ¿está cocinando? y nº de ingredientes
-                sensor.AddObservation(2f); //Codificado como olla
-                sensor.AddObservation(pot.Ingredients.Count);
-                sensor.AddObservation((float)pot.Ingredients[0].Type);
+                sensor.AddObservation(2f);                              // Codificado como olla
+                int n = pot.Ingredients.Count;
+                sensor.AddObservation(n);                               // nº de ingredientes
+                if (n > 0)
+                    sensor.AddObservation((float)pot.Ingredients[0].Type);
+                else
+                    sensor.AddObservation(-1f);  // default when empty
+                
             }
             else { // Objeto no reconocido: observa algo por defecto
                 sensor.AddObservation(-2f); // tipo desconocido
@@ -212,53 +216,63 @@ namespace Undercooked
 
         public override void OnActionReceived(ActionBuffers actionBuffers)
         {
-            if (actionDebug)
-                Debug.Log("ACTION!");
-            // Leer las acciones continuas
+            // Continuous for movement:
             a_MoveX(actionBuffers.ContinuousActions[0]);
             a_MoveY(actionBuffers.ContinuousActions[1]);
-            a_Dash(actionBuffers.ContinuousActions[2]);
-            a_Pickup(actionBuffers.ContinuousActions[3]);
-            a_Interact(actionBuffers.ContinuousActions[4]);
+
+            // Discrete for dash / pickup / interact:
+            var da = actionBuffers.DiscreteActions;
+            a_Dash(da[0]);
+            a_Pickup(da[1]);
+            a_Interact(da[2]);
         }
 
         // Lo separo por si queremos hacer algo entre medias antes de actualizar el valor
-        private void a_MoveX(float value)    
-        { 
-            if(actionDebug)
-                Debug.Log($"a_MoveX {value}");       
-            movementInput.x = value; 
-        }
-        private void a_MoveY(float value)    
-        { 
-            if(actionDebug) 
-                Debug.Log($"a_MoveY {value}"); 
-            movementInput.y = value; 
-        }
-        private void a_Dash(float value)     
+        private void a_MoveX(float value)
         {
-            if (actionDebug)
-                Debug.Log($"a_Dash {value}");        
-            dashInput = value >= 0.5; 
+            if (actionDebug) Debug.Log($"a_MoveX {value}");
+            movementInput.x = value;
         }
-        private void a_Pickup(float value)   
+
+        private void a_MoveY(float value)
         {
-            value = 0; // HEY BORRAR ESTA KK
-            if (actionDebug)
-                Debug.Log($"a_Pickup {value}");      
-            pickupInput = value >= 0.5; 
+            if (actionDebug) Debug.Log($"a_MoveY {value}");
+            movementInput.y = value;
         }
-        private void a_Interact(float value) 
+
+        private void a_Dash(int value)
         {
-            if (actionDebug)
-                Debug.Log($"a_Interact {value}");    
-            interactionInput = value >= 0.5; 
+            if (actionDebug) Debug.Log($"a_Dash {value}");
+            dashInput = (value == 1);
+        }
+
+        private void a_Pickup(int value)
+        {
+            if (actionDebug) Debug.Log($"a_Pickup {value}");
+            pickupInput = (value == 1);
+        }
+
+        private void a_Interact(int value)
+        {
+            if (actionDebug) Debug.Log($"a_Interact {value}");
+            interactionInput = (value == 1);
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
         {
-            actionMask.SetActionEnabled(0, 0, player_controller.isDashingPossible);
+            // Branch 0 = dash (0=no dash, 1=dash)
+            actionMask.SetActionEnabled(0, 1, player_controller.isDashingPossible);
+
+            // Branch 1 = pickup/drop (0=no, 1=yes)
+            bool canPickOrDrop =  interactable_controller.CurrentInteractable != null ||
+                                  player_controller.HeldObject != null;
+            actionMask.SetActionEnabled(1, 1, canPickOrDrop);
+
+            // Branch 2 = interact (0=no, 1=yes)
+            bool canInteract = interactable_controller.CurrentInteractable != null;
+            actionMask.SetActionEnabled(2, 1, canInteract);
         }
+
 
         public void OrderFailed()
         {
@@ -266,15 +280,16 @@ namespace Undercooked
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            player_controller.SetMLAgentInput(movementInput, dashInput, pickupInput,interactionInput);
+            player_controller.SetMLAgentInput(
+                movementInput, dashInput, pickupInput, interactionInput);
+
             if (endEpisode)
             {
                 ordersFailed = 0;
                 EndEpisode();
             }
-
         }
     }
 }

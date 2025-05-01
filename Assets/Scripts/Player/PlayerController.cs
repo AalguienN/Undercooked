@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using Lean.Transition;
 using Undercooked.Appliances;
 using Undercooked.Model;
@@ -186,54 +186,71 @@ namespace Undercooked.Player
 
         public void HandlePickUp()
         {
+            // 0) Clear out any pickable that's been destroyed
+            //    UnityEngine.Object override of == will return true if it was destroyed.
+            if (_currentPickable is UnityEngine.Object stale && stale == null)
+            {
+                _currentPickable = null;
+                animator.SetBool(_hasPickupHash, false);
+            }
+
             var interactable = _interactableController.CurrentInteractable;
 
-            // If not holding an item, try to pick one up.
+            // 1) If we're not holding anything, try to pick up
             if (_currentPickable == null)
             {
-                _currentPickable = interactable as IPickable;
+                if (interactable == null) return;
+
+                // Direct pick
+                var pickable = interactable as IPickable;
+                if (pickable != null)
+                {
+                    _currentPickable = pickable;
+                }
+                else
+                {
+                    // Try the fallback slot‐pickup
+                    _currentPickable = interactable.TryToPickUpFromSlot(_currentPickable);
+                }
+
                 if (_currentPickable != null)
                 {
                     animator.SetBool(_hasPickupHash, true);
                     this.PlaySoundTransition(pickupAudio);
                     _currentPickable.Pick();
                     _interactableController.Remove(_currentPickable as Interactable);
-                    _currentPickable.gameObject.transform.SetPositionAndRotation(slot.position, Quaternion.identity);
                     _currentPickable.gameObject.transform.SetParent(slot);
+                    _currentPickable.gameObject.transform.localPosition = Vector3.zero;
+                }
+
+                return;
+            }
+
+            // 2) If we *are* holding something, try to drop it
+            //    (only if the object still exists!)
+            if (_currentPickable != null)
+            {
+                // If there's nothing to drop *into*, just drop on the floor
+                if (interactable == null || interactable is IPickable)
+                {
+                    animator.SetBool(_hasPickupHash, false);
+                    this.PlaySoundTransition(dropAudio);
+                    _currentPickable.Drop();
+                    _currentPickable = null;
                     return;
                 }
 
-                // If the interactable isn t directly pickable.
-                _currentPickable = interactable?.TryToPickUpFromSlot(_currentPickable);
-                if (_currentPickable != null)
+                // Otherwise, try to place into the interactable
+                bool dropped = interactable.TryToDropIntoSlot(_currentPickable);
+                if (dropped)
                 {
-                    animator.SetBool(_hasPickupHash, true);
-                    this.PlaySoundTransition(pickupAudio);
+                    animator.SetBool(_hasPickupHash, false);
+                    this.PlaySoundTransition(dropAudio);
+                    _currentPickable = null;
                 }
-
-                _currentPickable?.gameObject.transform.SetPositionAndRotation(slot.position, Quaternion.identity);
-                _currentPickable?.gameObject.transform.SetParent(slot);
-                return;
             }
-
-            // If already carrying an item, attempt to drop it.
-            if (interactable == null || interactable is IPickable)
-            {
-                animator.SetBool(_hasPickupHash, false);
-                this.PlaySoundTransition(dropAudio);
-                _currentPickable.Drop();
-                _currentPickable = null;
-                return;
-            }
-
-            // If an interactable is present, try to drop the held item into it.
-            bool dropSuccess = interactable.TryToDropIntoSlot(_currentPickable);
-            if (!dropSuccess) return;
-
-            animator.SetBool(_hasPickupHash, false);
-            this.PlaySoundTransition(dropAudio);
-            _currentPickable = null;
         }
+
 
         public void HandleInteract()
         {
