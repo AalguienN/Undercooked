@@ -1962,6 +1962,10 @@ PrefabInstance:
       propertyPath: m_ObservableSize
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: burnRew
       value: 0
@@ -1996,7 +2000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: MaxStep
-      value: 100000
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: objectRandomizer

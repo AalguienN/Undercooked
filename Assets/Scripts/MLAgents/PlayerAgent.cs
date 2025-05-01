@@ -95,12 +95,12 @@ namespace Undercooked
             objectRandomizer.Randomize();
         }
 
-        private void AddObjectPositionObservation<T>(VectorSensor sensor) where T : MonoBehaviour {
+        private void AddObjectPositionObservation<T>(VectorSensor sensor, Vector3 refPos) where T : MonoBehaviour {
             var obj = FindFirstObjectByType<T>();
             if (obj != null) {
                 Vector3 pos = obj.transform.position;
-                sensor.AddObservation(pos.x);
-                sensor.AddObservation(pos.z);
+                sensor.AddObservation(pos.x - refPos.x);
+                sensor.AddObservation(pos.z - refPos.z);
             }
             else {
                 sensor.AddObservation(0f);
@@ -116,8 +116,8 @@ namespace Undercooked
             // En el futuro quiz� estar�a mejor con posiciones relativas si queremos entrenar varios a la vez
             // Pero si hacemos eso tendremos que tocar varios managers.... igual no interesa
             Vector3 pos = transform.position;
-            sensor.AddObservation(pos.x);
-            sensor.AddObservation(pos.z);
+            //sensor.AddObservation(pos.x);
+            //sensor.AddObservation(pos.z);
 
             sensor.AddObservation(transform.rotation.y);
 
@@ -125,18 +125,18 @@ namespace Undercooked
             //Vector3 DishTrayPos = FindFirstObjectByType<DishTray>().transform.position;
             //sensor.AddObservation(DishTrayPos.x - pos.x);
             //sensor.AddObservation(DishTrayPos.z - pos.z);
-
+            Vector2 refPos = new Vector2(pos.x, pos.z);
             // Observación 3: Posición del CookingPot más cercano (2 floats)
-            AddObjectPositionObservation<CookingPot>(sensor);
+            AddObjectPositionObservation<CookingPot>(sensor, refPos);
 
             // Observación 4: Posición del Hob más cercano (2 floats)
-            AddObjectPositionObservation<Hob>(sensor);
+            AddObjectPositionObservation<Hob>(sensor, refPos);
 
             // Observación 5: Posición del ChoppingBoard más cercano (2 floats)
-            AddObjectPositionObservation<ChoppingBoard>(sensor);
+            AddObjectPositionObservation<ChoppingBoard>(sensor, refPos);
 
             // Observación 6: Posición del DeliverCounterTop más cercano (2 floats)
-            AddObjectPositionObservation<DeliverCountertop>(sensor);
+            AddObjectPositionObservation<DeliverCountertop>(sensor, refPos);
 
             //Observación  7: Objeto cargado por el personaje (3 floats)
             var carried = player_controller.HeldObject;
