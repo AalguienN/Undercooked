@@ -425,7 +425,8 @@ namespace Undercooked.Appliances
             OnCookFinished?.Invoke(this);
             IsCookFinished = true;
             _currentCookTime = 0f;
-            _burnCoroutine = StartCoroutine(Burn());
+            if (FunctionalityManager.Instance.foodBurning)
+                _burnCoroutine = StartCoroutine(Burn());
         }
         
         public void Pick()

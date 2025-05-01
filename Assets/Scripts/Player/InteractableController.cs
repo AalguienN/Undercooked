@@ -24,6 +24,18 @@ namespace Undercooked.Player
         [CanBeNull]
         public Interactable CurrentInteractable { get; private set; }
 
+        public void Reset()
+        {
+            // 1) Turn off highlight on whatever was selected
+            CurrentInteractable?.ToggleHighlightOff();
+
+            // 2) Clear the runtime list
+            _interactables.Clear();
+
+            // 3) Null out the public pointer
+            CurrentInteractable = null;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             Interactable interactable = other.gameObject.GetComponent<Interactable>();
@@ -65,22 +77,29 @@ namespace Undercooked.Player
             // togglesOn only when there is a interactable near
             closest?.ToggleHighlightOn();
         }
-        
+
         /// <summary>
         /// Get the closest interactables from the ones in range. Null if there none in range. 
         /// </summary>
         private Interactable TryGetClosestInteractable()
         {
-            var minDistance = float.MaxValue;
+            // Remove any destroyed (i == null) entries
+            _interactables.RemoveWhere(i => i == null);
+
+            float minDistance = float.MaxValue;
             Interactable closest = null;
             foreach (var interactable in _interactables)
             {
-                var distance = Vector3.Distance(playerPivot.position, interactable.gameObject.transform.position);
-                if (distance > minDistance) continue;
-                minDistance = distance;
-                closest = interactable;
+                float dist = Vector3.Distance(
+                    playerPivot.position,
+                    interactable.transform.position
+                );
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    closest = interactable;
+                }
             }
-            
             return closest;
         }
     }

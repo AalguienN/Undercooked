@@ -50,24 +50,53 @@ namespace Undercooked.Player
         [SerializeField] private AudioClip pickupAudio;
         [SerializeField] private AudioClip dropAudio;
 
+        private Vector3 _initialPosition;
+        private Quaternion _initialRotation;
+
         public IPickable HeldObject => _currentPickable;
 
 
         public void Reset()
         {
+            // 1) Clear any “fake-null” or real held pickable
+            if (_currentPickable is UnityEngine.Object stale && stale == null)
+            {
+                _currentPickable = null;
+            }
             if (_currentPickable != null)
             {
-                // Tell the pickable to drop itself
-                _currentPickable.Drop();
-                // Clear out our local reference
-                _currentPickable = null;
-                // Update animator state
-                animator.SetBool(_hasPickupHash, false);
+                _currentPickable.Drop();                  // native-side drop
             }
+            _currentPickable = null;                       // managed reference clear
+            animator.SetBool(_hasPickupHash, false);      // reset pickup animation
+
+            // 3) Stop all coroutines on this script (dash, chop, etc.)
+            StopAllCoroutines();                          // MonoBehaviour.StopAllCoroutines :contentReference[oaicite:11]{index=11}
+
+            // 4) Reset dash state
+            _isDashing = false;
+            isDashingPossible = true;
+
+            // 5) Zero out physics velocity
+            playerRigidbody.linearVelocity = Vector3.zero;      // prevent sliding :contentReference[oaicite:12]{index=12}
+
+            // 6) Reset all animator flags
+            animator.SetBool(_isCleaningHash, false);
+            animator.SetBool(_isChoppingHash, false);
+
+            // 7) Optionally reposition the player
+            transform.SetPositionAndRotation(_initialPosition, _initialRotation);
+
+            // 8) Hide or reset visual indicators
+            knife.gameObject.SetActive(false);
+            selector.gameObject.SetActive(true);
         }
 
         private void Awake()
         {
+            _initialPosition = transform.position;
+            _initialRotation = transform.rotation;
+
             _interactableController = GetComponentInChildren<InteractableController>();
             knife.gameObject.SetActive(false);
             SetPlayerUniqueColor(playerColor);
@@ -191,78 +220,74 @@ namespace Undercooked.Player
             yield return _dashCooldown;
             isDashingPossible = true;
         }
-
         public void HandlePickUp()
         {
-            // 0) Clear out any pickable that's been destroyed
-            //    UnityEngine.Object override of == will return true if it was destroyed.
-            if (_currentPickable is UnityEngine.Object stale && stale == null)
+            // --- 0) Drop any stale held object (fake-null) ---
+            if (_currentPickable is UnityEngine.Object staleHeld && staleHeld == null)
             {
                 _currentPickable = null;
                 animator.SetBool(_hasPickupHash, false);
             }
 
+            // --- 0b) Snapshot & clear any stale CurrentInteractable ---
             var interactable = _interactableController.CurrentInteractable;
+            if (interactable is UnityEngine.Object staleInteract && staleInteract == null)
+            {
+                _interactableController.Reset();   // clears highlight & nulls CurrentInteractable
+                interactable = null;
+            }
 
-            // 1) If we're not holding anything, try to pick up
+            // --- 1) PICKUP: if not holding anything ---
             if (_currentPickable == null)
             {
                 if (interactable == null) return;
 
-                // Direct pick
-                var pickable = interactable as IPickable;
-                if (pickable != null)
-                {
-                    _currentPickable = pickable;
-                }
-                else
-                {
-                    // Try the fallback slot‐pickup
-                    _currentPickable = interactable.TryToPickUpFromSlot(_currentPickable);
-                }
+                IPickable picked = null;
 
-                if (_currentPickable != null)
+                // direct pick
+                if (interactable is IPickable direct)
+                    picked = direct;
+                else
+                    // fallback slot‐pickup
+                    picked = interactable.TryToPickUpFromSlot(_currentPickable);
+
+                if (picked != null)
                 {
+                    _currentPickable = picked;
                     animator.SetBool(_hasPickupHash, true);
                     this.PlaySoundTransition(pickupAudio);
                     _currentPickable.Pick();
                     _interactableController.Remove(_currentPickable as Interactable);
 
-                    // SAFETY CHECK: only SetParent if neither side was destroyed
-                    if (_currentPickable is Component pickableComp && slot != null)
+                    // SAFETY: only reparent if the Component wrapper still exists
+                    if (_currentPickable is Component pickableComp
+                        && pickableComp != null
+                        && slot != null)
                     {
-                        var go = pickableComp.gameObject;
-                        go.transform.SetParent(slot);
-                        go.transform.localPosition = Vector3.zero;
+                        pickableComp.transform.SetParent(slot);
+                        pickableComp.transform.localPosition = Vector3.zero;
                     }
                 }
-
-
                 return;
             }
 
-            // 2) If we *are* holding something, try to drop it
-            //    (only if the object still exists!)
-            if (_currentPickable != null)
+            // --- 2) DROP: if already holding something ---
+            // drop if no valid target or target is itself pickable
+            if (interactable == null || interactable is IPickable)
             {
-                // If there's nothing to drop *into*, just drop on the floor
-                if (interactable == null || interactable is IPickable)
-                {
-                    animator.SetBool(_hasPickupHash, false);
-                    this.PlaySoundTransition(dropAudio);
-                    _currentPickable.Drop();
-                    _currentPickable = null;
-                    return;
-                }
+                animator.SetBool(_hasPickupHash, false);
+                this.PlaySoundTransition(dropAudio);
+                _currentPickable.Drop();
+                _currentPickable = null;
+                return;
+            }
 
-                // Otherwise, try to place into the interactable
-                bool dropped = interactable.TryToDropIntoSlot(_currentPickable);
-                if (dropped)
-                {
-                    animator.SetBool(_hasPickupHash, false);
-                    this.PlaySoundTransition(dropAudio);
-                    _currentPickable = null;
-                }
+            // otherwise try to place into the interactable slot
+            if (interactable.TryToDropIntoSlot(_currentPickable))
+            {
+                animator.SetBool(_hasPickupHash, false);
+                this.PlaySoundTransition(dropAudio);
+                _currentPickable = null;
             }
         }
 

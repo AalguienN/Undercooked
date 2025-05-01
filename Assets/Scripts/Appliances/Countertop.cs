@@ -5,6 +5,23 @@ namespace Undercooked.Appliances
 {
     public class Countertop : Interactable
     {
+        public void Reset()
+        {
+            if (CurrentPickable != null)
+            {
+                switch (CurrentPickable)
+                {
+                    // 1) If it's a loose Ingredient, destroy it outright:
+                    case Ingredient ing:
+                        Destroy(ing.gameObject);
+                        break;
+                }
+
+                // 5) Finally, wipe out the reference so Interactable logic never sees it again:
+                CurrentPickable = null;
+            }
+        }
+
         public override bool TryToDropIntoSlot(IPickable pickableToDrop)
         {
             if (CurrentPickable == null) return TryDropIfNotOccupied(pickableToDrop);

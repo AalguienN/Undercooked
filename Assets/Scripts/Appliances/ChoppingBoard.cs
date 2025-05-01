@@ -30,10 +30,20 @@ namespace Undercooked.Appliances
         {
             slider.gameObject.SetActive(false);
             _isChopping = false;
+            if (_chopCoroutine != null) StopCoroutine(_chopCoroutine);
             _chopCoroutine = null;
-            Destroy(CurrentPickable?.gameObject);
-            CurrentPickable = null;
-            //TryToDropIntoSlot(Instantiate(Cebolla).GetComponent<Ingredient>());
+
+            // 1) Destroy whatever was sitting on the board…
+            if (CurrentPickable != null)
+                Destroy(CurrentPickable.gameObject);
+
+            // 2) …then clear *every* reference to it:
+            CurrentPickable = null;   // Interactable’s field
+            _ingredient = null;   // your own private pointer
+            LastPlayerControllerInteracting = null;
+
+            // 3) Put the knife back
+            knife.gameObject.SetActive(true);
         }
 
         protected override void Awake()

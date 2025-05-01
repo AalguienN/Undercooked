@@ -22,6 +22,7 @@ namespace Undercooked
         private bool pickupInput;
         private bool interactionInput;
 
+        private InteractableController _interactableController;
         private OrderManager OM;
         private bool endEpisode => orderFailedToReset == ordersFailed;
         private int orderFailedToReset = 20;
@@ -65,31 +66,31 @@ namespace Undercooked
         {
             // objectRandomizer.Randomice();
             OM = FindAnyObjectByType<OrderManager>();
+            _interactableController = GetComponentInChildren<InteractableController>();
         }
 
         public override void OnEpisodeBegin()
         {
             GetComponent<PlayerController>().Reset();
 
-            GameObject.FindAnyObjectByType<OrderManager>().Reset();
+            _interactableController.Reset();
 
-            foreach (Ingredient ing in GameObject.FindObjectsByType<Ingredient>(sortMode:FindObjectsSortMode.None)) {
-                Destroy(ing.gameObject);                
-            }
-            foreach (CookingPot cp in GameObject.FindObjectsByType<CookingPot>(sortMode: FindObjectsSortMode.None)) {
-                cp.Reset();
-            }
-            foreach (Hob h in GameObject.FindObjectsByType<Hob>(sortMode: FindObjectsSortMode.None)) {
-                h.Reset();
-            }
-            foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None)) {
-                cb.Reset();
-            }
+            GameObject.FindAnyObjectByType<OrderManager>().Reset();
+            
+            foreach (CookingPot cp in GameObject.FindObjectsByType<CookingPot>(sortMode: FindObjectsSortMode.None))       cp.Reset();
+            
+            foreach (Hob h in GameObject.FindObjectsByType<Hob>(sortMode: FindObjectsSortMode.None))                      h.Reset();
+            
+            foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None)) cb.Reset();
+
+            foreach (Countertop ct in GameObject.FindObjectsByType<Countertop>(sortMode: FindObjectsSortMode.None))       ct.Reset();
+
             GameObject.FindAnyObjectByType<DishTray>()?.Reset();
 
-
-            //foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None))
-            //foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None))
+            foreach (Ingredient ing in GameObject.FindObjectsByType<Ingredient>(sortMode: FindObjectsSortMode.None))
+            {
+                Destroy(ing.gameObject);
+            }
 
             objectRandomizer.Randomize();
         }
