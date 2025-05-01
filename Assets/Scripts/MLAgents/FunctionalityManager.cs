@@ -8,7 +8,7 @@ namespace Undercooked
         public static FunctionalityManager Instance { get; private set; }
 
         [HideInInspector]
-        public bool foodBurning = true;
+        public bool foodBurning = false;
 
         [Header("Functionality Toggles")]
         [SerializeField] private bool _CuttingTraining = true;
@@ -26,7 +26,7 @@ namespace Undercooked
 
                     // Set the reward values you want for certain actions, negativa, 0, positive
                     foreach (RewardSystem rs in FindObjectsByType<RewardSystem>(sortMode: FindObjectsSortMode.None)) { 
-                        rs.cutRew  = 0.1f;
+                        rs.endCutRew  = 0.1f;
                         rs.cookRew  = 0.0f;
                         rs.burnRew  = 0.0f;
                         rs.cleanRew = 0.0f;

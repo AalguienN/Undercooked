@@ -37,7 +37,8 @@ namespace Undercooked.Model
             _collider = GetComponent<Collider>();
             Setup();
 
-            IconCameraProcessed.SetActive(false);
+            
+            //IconCameraProcessed.SetActive(false);
         }
 
         private void Setup()
@@ -83,7 +84,7 @@ namespace Undercooked.Model
         {
             Status = IngredientStatus.Processed;
             _meshFilter.mesh = data.processedMesh;
-            IconCameraProcessed.SetActive(true);
+            //IconCameraProcessed.SetActive(true);
         }
 
         public void ChangeToCooked()
@@ -99,10 +100,10 @@ namespace Undercooked.Model
         public void SetMeshRendererEnabled(bool enable)
         {
             _meshRenderer.enabled = enable;
-            IconCamera.SetActive(enable);
-            if (Status == IngredientStatus.Processed)
-                IconCameraProcessed.SetActive(enable);
-            else IconCameraProcessed.SetActive(false);
+            //IconCamera.SetActive(enable);
+            //if (Status == IngredientStatus.Processed)
+            //    IconCameraProcessed.SetActive(enable);
+            //else IconCameraProcessed.SetActive(false);
         }
 
         public override bool TryToDropIntoSlot(IPickable pickableToDrop)

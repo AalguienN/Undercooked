@@ -70,6 +70,7 @@ namespace Undercooked.Appliances
         // the only option is to trash it
         // we only deliver single ingredient soups
 
+        public static event System.Action<CookingPot> OnIngredientAdded;
         public static event System.Action<CookingPot> OnCookFinished;
         public static event System.Action<CookingPot> OnBurned;
 
@@ -312,7 +313,7 @@ namespace Undercooked.Appliances
             }
 
             // Debug.Log("[CookingPot] Finish partial cooking");
-            if(false)
+            if (FunctionalityManager.Instance.foodBurning)
                 _burnCoroutine = StartCoroutine(Burn());
         }
 
@@ -452,7 +453,7 @@ namespace Undercooked.Appliances
             }
             
             Ingredients.Add(ingredient);
-            
+            OnIngredientAdded?.Invoke(this);
             _totalCookTime += ingredient.CookTime;
             
             SetLiquidLevelAndColor();

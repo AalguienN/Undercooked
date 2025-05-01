@@ -55,7 +55,15 @@ namespace Undercooked.Player
 
         public void Reset()
         {
-            _currentPickable = null;
+            if (_currentPickable != null)
+            {
+                // Tell the pickable to drop itself
+                _currentPickable.Drop();
+                // Clear out our local reference
+                _currentPickable = null;
+                // Update animator state
+                animator.SetBool(_hasPickupHash, false);
+            }
         }
 
         private void Awake()
@@ -219,9 +227,16 @@ namespace Undercooked.Player
                     this.PlaySoundTransition(pickupAudio);
                     _currentPickable.Pick();
                     _interactableController.Remove(_currentPickable as Interactable);
-                    _currentPickable.gameObject.transform.SetParent(slot);
-                    _currentPickable.gameObject.transform.localPosition = Vector3.zero;
+
+                    // SAFETY CHECK: only SetParent if neither side was destroyed
+                    if (_currentPickable is Component pickableComp && slot != null)
+                    {
+                        var go = pickableComp.gameObject;
+                        go.transform.SetParent(slot);
+                        go.transform.localPosition = Vector3.zero;
+                    }
                 }
+
 
                 return;
             }

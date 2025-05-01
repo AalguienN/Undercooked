@@ -21,6 +21,7 @@ namespace Undercooked.Appliances
 
         public delegate void ChoppingStatus(PlayerController playerController, bool completed);
         public static event ChoppingStatus OnChoppingStart;
+        public static event ChoppingStatus OnChopping;
         public static event ChoppingStatus OnChoppingStop;
 
         public GameObject Cebolla;
@@ -95,6 +96,7 @@ namespace Undercooked.Appliances
             _isChopping = true;
             while (_currentProcessTime < _finalProcessTime)
             {
+                OnChopping?.Invoke(LastPlayerControllerInteracting, true);
                 slider.value = _currentProcessTime / _finalProcessTime;
                 _currentProcessTime += Time.deltaTime;
                 yield return null;

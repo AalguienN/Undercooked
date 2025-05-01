@@ -66,9 +66,13 @@ namespace Undercooked
             // objectRandomizer.Randomice();
             OM = FindAnyObjectByType<OrderManager>();
         }
+
         public override void OnEpisodeBegin()
         {
+            GetComponent<PlayerController>().Reset();
+
             GameObject.FindAnyObjectByType<OrderManager>().Reset();
+
             foreach (Ingredient ing in GameObject.FindObjectsByType<Ingredient>(sortMode:FindObjectsSortMode.None)) {
                 Destroy(ing.gameObject);                
             }
@@ -83,7 +87,6 @@ namespace Undercooked
             }
             GameObject.FindAnyObjectByType<DishTray>()?.Reset();
 
-            GetComponent<PlayerController>().Reset();
 
             //foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None))
             //foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None))
@@ -118,9 +121,9 @@ namespace Undercooked
             sensor.AddObservation(transform.rotation.y);
 
             //Observación 2 (espacio 2): Posición de dish tray en el mundo
-            Vector3 DishTrayPos = FindFirstObjectByType<DishTray>().transform.position;
-            sensor.AddObservation(DishTrayPos.x);
-            sensor.AddObservation(DishTrayPos.z);
+            //Vector3 DishTrayPos = FindFirstObjectByType<DishTray>().transform.position;
+            //sensor.AddObservation(DishTrayPos.x - pos.x);
+            //sensor.AddObservation(DishTrayPos.z - pos.z);
 
             // Observación 3: Posición del CookingPot más cercano (2 floats)
             AddObjectPositionObservation<CookingPot>(sensor);
@@ -190,18 +193,17 @@ namespace Undercooked
                 Vector3 ipos = ing.transform.position;
                 float[] obs = new float[] //Tamaño de 5
                 {
-                    ipos.x, ipos.y, ipos.z, (float)ing.Type, (float)ing.Status
+                    (ipos.x - pos.x), (ipos.z - pos.z), (float)ing.Type, (float)ing.Status
                 };
                 ingredientBuffer.AppendObservation(obs);
             }
-
 
             foreach (var plate in FindObjectsByType<Plate>(sortMode: FindObjectsSortMode.InstanceID))
             {
                 Vector3 ipos = plate.transform.position;
                 float[] obs = new float[] //Tamaño de 5
                 {
-                    ipos.x, ipos.y, ipos.z, plate.IsClean ? 1 : 0, plate.Ingredients.Count
+                    (ipos.x - pos.x), (ipos.z - pos.z), plate.IsClean ? 1 : 0, plate.Ingredients.Count
                 };
                 plateBuffer.AppendObservation(obs);
             }
@@ -209,7 +211,7 @@ namespace Undercooked
             foreach (var ic in FindObjectsByType<IngredientCrate>(sortMode: FindObjectsSortMode.None)) {
                 Vector3 ipos = ic.transform.position;
                 float[] obs = new float[] {
-                    ipos.x, ipos.z, (float) ic.type
+                    (ipos.x - pos.x), (ipos.z - pos.z), (float) ic.type
                 };
             }
         }
@@ -282,8 +284,7 @@ namespace Undercooked
         // Update is called once per frame
         private void Update()
         {
-            player_controller.SetMLAgentInput(
-                movementInput, dashInput, pickupInput, interactionInput);
+            player_controller.SetMLAgentInput(movementInput, dashInput, pickupInput, interactionInput);
 
             if (endEpisode)
             {

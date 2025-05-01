@@ -14,6 +14,21 @@ namespace Undercooked.UI
         private readonly List<OrderUI> _ordersUI = new List<OrderUI>();
         private readonly Queue<OrderUI> _orderUIPool = new Queue<OrderUI>();
 
+        public void ClearAll()
+        {
+            // Return all active OrderUIs to the pool
+            foreach (var orderUI in _ordersUI)
+            {
+                // Hide it
+                orderUI.gameObject.SetActive(false);
+                // Enqueue for reuse
+                _orderUIPool.Enqueue(orderUI);
+            }
+            // Clear the list of active UIs
+            _ordersUI.Clear();
+        }
+
+
         private void Awake()
         {
             #if UNITY_EDITOR

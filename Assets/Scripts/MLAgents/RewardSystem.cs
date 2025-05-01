@@ -11,7 +11,8 @@ namespace Undercooked
     {
         [Header("Rewards")]
         public float startCutRew = 0.0f;
-        public float cutRew = 0.0f;
+        public float duringCutRew = 0.0f;
+        public float endCutRew = 0.0f;
         public float cookRew = 0.0f;
         public float burnRew  = 0.0f;
         public float cleanRew = 0.0f;
@@ -19,6 +20,7 @@ namespace Undercooked
         public float expiredRew = 0.0f;
         public int numberOfTooMuchFood = 0;
         public float tooMuchFoodRew = 0.0f;
+        public float addIngredientToPotRew = 0.0f;
 
         public float totalReward { get; private set; }
 
@@ -54,9 +56,11 @@ namespace Undercooked
         private void SubscribeRewardEvents()
         {
             ChoppingBoard.OnChoppingStop += OnChopped;
+            ChoppingBoard.OnChopping += OnChopping;
             Sink.OnCleanStop += OnCleaned;
             CookingPot.OnCookFinished += OnCooked;
             CookingPot.OnBurned += OnBurned;
+            CookingPot.OnIngredientAdded += OnIngridienAdded;
             OrderManager.OnOrderDelivered += OnDelivered;
             OrderManager.OnOrderExpired += OnExpired;
 
@@ -82,12 +86,22 @@ namespace Undercooked
 
         void OnChopped(PlayerController pc, bool done)
         {
-            if (done && pc == owner) Add(cutRew); //Solo el que lo ha hecho
+            if (done && pc == owner) Add(endCutRew); //Solo el que lo ha hecho
+        }
+
+        void OnChopping(PlayerController pc, bool done)
+        {
+            if (done && pc == owner) Add(duringCutRew); //Solo el que lo ha hecho
         }
 
         void OnCleaned(PlayerController pc, bool done)
         {
             if (done && pc == owner) Add(cleanRew); //Solo el que lo ha hecho
+        }
+
+        void OnIngridienAdded(CookingPot pot) 
+        {
+            Add(addIngredientToPotRew);
         }
 
         void OnCooked(CookingPot pot)
@@ -102,7 +116,10 @@ namespace Undercooked
 
         void OnDelivered(Order order, int tip)
         {
-            Add(deliverRew);
+            if (order == null) 
+                Add(-deliverRew);
+            else 
+                Add(deliverRew);
         }
 
         void OnExpired(Order order)

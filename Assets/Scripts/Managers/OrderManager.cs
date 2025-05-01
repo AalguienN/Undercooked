@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Undercooked.Data;
@@ -40,15 +40,36 @@ namespace Undercooked.Managers
 
         public void Reset()
         {
-            //Orders.Clear();
-            for (int i = 0; i < Orders.Count(); i++) {
-                DeactivateSendBackToPool(Orders[i]);
+            // 1) Stop the generator so we don’t spawn while we’re clearing things
+            if (_generatorCoroutine != null)
+            {
+                StopCoroutine(_generatorCoroutine);
+                _generatorCoroutine = null;
             }
-            //StopAllCoroutines();
-            //Init(currentLevel);
-            //StopAndClear();
-            //_generatorCoroutine = StartCoroutine(OrderGeneratorCoroutine());
+            _isGeneratorActive = false;
+
+            // 2) Return every live order to the pool
+            //    We iterate over a copy because DeactivateSendBackToPool removes from _orders.
+            foreach (var order in _orders.ToList())
+            {
+                // Mark it delivered (so RemoveAll will pick it up),
+                // unsubscribe, enqueue back to pool:
+                order.SetOrderDelivered();
+                UnsubscribeEvents(order);
+                _poolOrders.Enqueue(order);
+            }
+            // 3) Clear the active‐orders list
+            _orders.Clear();
+
+            // 4) Update your UI: remove all existing panels
+            ordersPanelUI.ClearAll();  // <-- implement a method that hides/clears all slots
+
+            // 5) Restart the generator
+            _intervalBetweenDropsWait = new WaitForSeconds(spawnIntervalBetweenOrders);
+            _isGeneratorActive = true;
+            _generatorCoroutine = StartCoroutine(OrderGeneratorCoroutine());
         }
+
 
         private Order GetOrderFromPool()
         {
@@ -155,6 +176,14 @@ namespace Undercooked.Managers
         public void CheckIngredientsMatchOrder(List<Ingredient> ingredients)
         {
             if (ingredients == null) return;
+
+            if (ingredients.Count == 0)
+            {
+                // signal “empty plate delivered” with order=null, tip=-1
+                OnOrderDelivered?.Invoke(null, -1);
+                return;
+            }
+
             List<IngredientType> plateIngredients = ingredients.Select(x => x.Type).ToList();
 
             // orders are checked by arrival order (arrivalTime is reset when order expires)

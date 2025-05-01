@@ -3,55 +3,43 @@
   "WorkspaceRootPath": "D:\\Universidad\\Ara\\Undercooked\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\appliances\\dishtray.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\dishtray.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\ui\\orderspanelui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\ui\\orderspanelui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\managers\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\managers\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\mlagents\\rewardsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\mlagents\\rewardsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\data\\ingredientdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\data\\ingredientdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\model\\ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\model\\ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\ui\\countdownui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\ui\\countdownui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\appliances\\cookingpot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\cookingpot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\managers\\ordermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\managers\\ordermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\mlagents\\playeragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\mlagents\\playeragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6A23E655-7843-64CC-42EF-CB77DA9C8A45}|Unity.ML-Agents.csproj|d:\\universidad\\ara\\ml-agents\\com.unity.ml-agents\\runtime\\actuators\\actionsegment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\appliances\\choppingboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\choppingboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\mlagents\\functionalitymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\mlagents\\functionalitymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6A23E655-7843-64CC-42EF-CB77DA9C8A45}|Unity.ML-Agents.csproj|d:\\universidad\\ara\\ml-agents\\com.unity.ml-agents\\runtime\\agent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\mlagents\\objectrandomizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\mlagents\\objectrandomizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\mlagents\\rewardsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\mlagents\\rewardsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\appliances\\delivercountertop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\delivercountertop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\appliances\\cookingpot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\cookingpot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\appliances\\countertop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\countertop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\player\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\player\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|d:\\universidad\\ara\\undercooked\\assets\\scripts\\appliances\\dishtray.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\appliances\\dishtray.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|D:\\Universidad\\Ara\\Undercooked\\assets\\scripts\\model\\ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EDF3EA-085E-9B55-60A9-70AA6EE9E770}|Undercooked.csproj|solutionrelative:assets\\scripts\\model\\ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -66,156 +54,66 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DishTray.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\DishTray.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Appliances\\DishTray.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\DishTray.cs*",
-              "RelativeToolTip": "Assets\\Scripts\\Appliances\\DishTray.cs*",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAkAAAAjAAAAAAAAAA==",
+              "Title": "OrdersPanelUI.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\UI\\OrdersPanelUI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\OrdersPanelUI.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\UI\\OrdersPanelUI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI\\OrdersPanelUI.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAmwBAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T13:00:06.037Z",
+              "WhenOpened": "2025-05-01T09:23:43.237Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "GameManager.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Managers\\GameManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Managers\\GameManager.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Managers\\GameManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Managers\\GameManager.cs",
-              "ViewState": "AgIAANcAAAAAAAAAAIA+wOcAAAAiAAAAAAAAAA==",
+              "Title": "OrderManager.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Managers\\OrderManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Managers\\OrderManager.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Managers\\OrderManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Managers\\OrderManager.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAASwBMAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T12:59:55.513Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IngredientData.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Data\\IngredientData.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Data\\IngredientData.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Data\\IngredientData.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Data\\IngredientData.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T12:13:45.531Z",
+              "WhenOpened": "2025-05-01T09:22:42.231Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Ingredient.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Model\\Ingredient.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Model\\Ingredient.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Model\\Ingredient.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Model\\Ingredient.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAoAAAApAAAAAAAAAA==",
+              "Title": "Agent.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\ml-agents\\com.unity.ml-agents\\Runtime\\Agent.cs",
+              "RelativeDocumentMoniker": "..\\ml-agents\\com.unity.ml-agents\\Runtime\\Agent.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\ml-agents\\com.unity.ml-agents\\Runtime\\Agent.cs",
+              "RelativeToolTip": "..\\ml-agents\\com.unity.ml-agents\\Runtime\\Agent.cs",
+              "ViewState": "AgIAAMEDAAAAAAAAAAAawNADAABsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T12:13:25.942Z",
+              "WhenOpened": "2025-05-01T09:21:15.251Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CountdownUI.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\UI\\CountdownUI.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\CountdownUI.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\UI\\CountdownUI.cs",
-              "RelativeToolTip": "Assets\\Scripts\\UI\\CountdownUI.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "ChoppingBoard.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\ChoppingBoard.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Appliances\\ChoppingBoard.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\ChoppingBoard.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Appliances\\ChoppingBoard.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAwCIAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T11:43:47.074Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ActionSegment.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\ml-agents\\com.unity.ml-agents\\Runtime\\Actuators\\ActionSegment.cs",
-              "RelativeDocumentMoniker": "..\\ml-agents\\com.unity.ml-agents\\Runtime\\Actuators\\ActionSegment.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\ml-agents\\com.unity.ml-agents\\Runtime\\Actuators\\ActionSegment.cs",
-              "RelativeToolTip": "..\\ml-agents\\com.unity.ml-agents\\Runtime\\Actuators\\ActionSegment.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAvwFkAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T11:21:54.192Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Countertop.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\Countertop.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Appliances\\Countertop.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\Countertop.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Appliances\\Countertop.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T11:42:27.19Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ObjectRandomizer.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\ObjectRandomizer.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\MLAgents\\ObjectRandomizer.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\ObjectRandomizer.cs",
-              "RelativeToolTip": "Assets\\Scripts\\MLAgents\\ObjectRandomizer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T11:08:16.201Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PlayerAgent.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
-              "RelativeToolTip": "Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAApwJYAAABmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-09T16:14:41.343Z",
+              "WhenOpened": "2025-05-01T09:00:19.734Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "FunctionalityManager.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\FunctionalityManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\MLAgents\\FunctionalityManager.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\FunctionalityManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\MLAgents\\FunctionalityManager.cs",
-              "ViewState": "AgIAAAIAAADAzMzMzIwjwAkAAAAZAAAAAAAAAA==",
+              "Title": "Ingredient.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Model\\Ingredient.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Model\\Ingredient.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Model\\Ingredient.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Model\\Ingredient.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAiwE0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-03T14:12:49.95Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "RewardSystem.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\RewardSystem.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\MLAgents\\RewardSystem.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\RewardSystem.cs",
-              "RelativeToolTip": "Assets\\Scripts\\MLAgents\\RewardSystem.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAASwGoAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-03T14:06:14.81Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "DeliverCountertop.cs",
-              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\DeliverCountertop.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Appliances\\DeliverCountertop.cs",
-              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\DeliverCountertop.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Appliances\\DeliverCountertop.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwCcAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T11:04:39.742Z",
+              "WhenOpened": "2025-04-21T12:13:25.942Z",
               "EditorCaption": ""
             },
             {
@@ -226,9 +124,61 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\Appliances\\CookingPot.cs",
               "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\CookingPot.cs",
               "RelativeToolTip": "Assets\\Scripts\\Appliances\\CookingPot.cs",
-              "ViewState": "AgIAAB4BAAAAAAAAAAArwDUBAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAANsBAAAAAAAAAAAUwPcBAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-03T14:00:05.583Z",
+              "WhenOpened": "2025-05-01T08:41:49.459Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Player\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerController.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Player\\PlayerController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerController.cs",
+              "ViewState": "AgIAAK4AAAAAAAAAAAASwL0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-01T08:23:35.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DishTray.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\DishTray.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Appliances\\DishTray.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\Appliances\\DishTray.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Appliances\\DishTray.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwA4AAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-01T08:12:47.499Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlayerAgent.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MLAgents\\PlayerAgent.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAEwEIAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T16:14:41.343Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RewardSystem.cs",
+              "DocumentMoniker": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\RewardSystem.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MLAgents\\RewardSystem.cs",
+              "ToolTip": "D:\\Universidad\\Ara\\Undercooked\\Assets\\Scripts\\MLAgents\\RewardSystem.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MLAgents\\RewardSystem.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAhwBMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-03T14:06:14.81Z",
               "EditorCaption": ""
             }
           ]
