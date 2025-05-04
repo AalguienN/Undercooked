@@ -70,9 +70,9 @@ namespace Undercooked.Appliances
         // the only option is to trash it
         // we only deliver single ingredient soups
 
-        public static event System.Action<CookingPot> OnIngredientAdded;
+        public static event System.Action<CookingPot> OnPotPositive;
+        public static event System.Action<CookingPot> OnPotNegative;
         public static event System.Action<CookingPot> OnCookFinished;
-        public static event System.Action<CookingPot> OnBurned;
 
 
         public void Reset()
@@ -124,6 +124,7 @@ namespace Undercooked.Appliances
                 case Ingredient ingredient:
                     if (ingredient.Status != IngredientStatus.Processed)
                     {
+                        OnPotNegative?.Invoke(this);
                         Debug.Log("[CookingPot] Only accept chopped/processed ingredients");
                         return false;
                     }
@@ -133,6 +134,7 @@ namespace Undercooked.Appliances
                     {
                         return TryDrop(pickableToDrop);    
                     }
+                    OnPotNegative?.Invoke(this);
                     Debug.Log("[CookingPot] Only accept Onions, tomatoes or Mushrooms");
                     return false;
                 case Plate plate:
@@ -143,6 +145,7 @@ namespace Undercooked.Appliances
                         {
                             // Drop soup back into CookingPot
                             TryAddIngredients(plate.Ingredients);
+                            OnPotNegative?.Invoke(this);
                             plate.RemoveAllIngredients();
                             return false;
                         }
@@ -158,12 +161,15 @@ namespace Undercooked.Appliances
                         if (!isSoup) return false;
                         
                         plate.AddIngredients(this.Ingredients);
+                        OnPotPositive?.Invoke(this);
+
                         EmptyPan();
                         return false;
                     }
                     break;
                 
                 default:
+                    OnPotNegative?.Invoke(this);
                     Debug.LogWarning("[ChoppingBoard] Refuse everything else");
                     return false;
             }
@@ -242,9 +248,9 @@ namespace Undercooked.Appliances
             warningPopup.enabled = false;
 
             if (Ingredients.Count == 0 || IsBurned) return;
-            
+
             // after cook, we burn
-            if (FunctionalityManager.Instance.foodBurning)
+            if (IsCookFinished)
             {
                 _burnCoroutine = StartCoroutine(Burn());
                 return;
@@ -312,9 +318,7 @@ namespace Undercooked.Appliances
                 yield break;
             }
 
-            // Debug.Log("[CookingPot] Finish partial cooking");
-            if (FunctionalityManager.Instance.foodBurning)
-                _burnCoroutine = StartCoroutine(Burn());
+            _burnCoroutine = StartCoroutine(Burn());
         }
 
         private IEnumerator Burn()
@@ -329,75 +333,78 @@ namespace Undercooked.Appliances
             {
                 AnimateGreenCheck();    
             }
-            whiteSmoke.gameObject.SetActive(true);
-            
-            while (_currentBurnTime < timeLine[1])
-            {
-                _currentBurnTime += Time.deltaTime;
-                yield return null;
-            }
-            
-            warningPopup.enabled = true;
 
-            var internalCount = 0f;
-            
-            // pulsating at 2Hz
-            while (_currentBurnTime < timeLine[2])
-            {
-                _currentBurnTime += Time.deltaTime;
-                internalCount += Time.deltaTime;
-                if (internalCount > 0.5f)
-                {
-                    internalCount = 0f;
-                    PulseAndBeep(1.15f);
-                }
-                yield return null;
-            }
-            
-            // pulsating at 5Hz
-            while (_currentBurnTime < timeLine[3])
-            {
-                _currentBurnTime += Time.deltaTime;
-                internalCount += Time.deltaTime;
-                if (internalCount > 0.2f)
-                {
-                    internalCount = 0f;
-                    PulseAndBeep(1.25f);
-                }
-                yield return null;
-            }
+            yield return null;
 
-            var initialColor = liquidMaterial.color;
-            var delta = timeLine[4] - timeLine[3];
+            //whiteSmoke.gameObject.SetActive(true);
             
-            // pulsating at 10Hz
-            while (_currentBurnTime < timeLine[4])
-            {
+            //while (_currentBurnTime < timeLine[1])
+            //{
+            //    _currentBurnTime += Time.deltaTime;
+            //    yield return null;
+            //}
+            
+            //warningPopup.enabled = true;
+
+            //var internalCount = 0f;
+            
+            //// pulsating at 2Hz
+            //while (_currentBurnTime < timeLine[2])
+            //{
+            //    _currentBurnTime += Time.deltaTime;
+            //    internalCount += Time.deltaTime;
+            //    if (internalCount > 0.5f)
+            //    {
+            //        internalCount = 0f;
+            //        PulseAndBeep(1.15f);
+            //    }
+            //    yield return null;
+            //}
+            
+            //// pulsating at 5Hz
+            //while (_currentBurnTime < timeLine[3])
+            //{
+            //    _currentBurnTime += Time.deltaTime;
+            //    internalCount += Time.deltaTime;
+            //    if (internalCount > 0.2f)
+            //    {
+            //        internalCount = 0f;
+            //        PulseAndBeep(1.25f);
+            //    }
+            //    yield return null;
+            //}
+
+            //var initialColor = liquidMaterial.color;
+            //var delta = timeLine[4] - timeLine[3];
+            
+            //// pulsating at 10Hz
+            //while (_currentBurnTime < timeLine[4])
+            //{
                 
-                var interpolate = (_currentBurnTime - timeLine[3]) / delta;
-                liquidMaterial.color = Color.Lerp(initialColor, burnLiquid, interpolate);
-                _currentBurnTime += Time.deltaTime;
-                internalCount += Time.deltaTime;
-                if (internalCount > 0.1f)
-                {
-                    internalCount = 0f;
-                    PulseAndBeep(1.35f);
-                }
-                yield return null;
-            }
+            //    var interpolate = (_currentBurnTime - timeLine[3]) / delta;
+            //    liquidMaterial.color = Color.Lerp(initialColor, burnLiquid, interpolate);
+            //    _currentBurnTime += Time.deltaTime;
+            //    internalCount += Time.deltaTime;
+            //    if (internalCount > 0.1f)
+            //    {
+            //        internalCount = 0f;
+            //        PulseAndBeep(1.35f);
+            //    }
+            //    yield return null;
+            //}
             
-            // FX's
-            warningPopup.enabled = false;
-            IsBurned = true;
-            OnBurned?.Invoke(this);
-            _inBurnProcess = false;
-            _currentBurnTime = 0f;
+            //// FX's
+            //warningPopup.enabled = false;
+            //IsBurned = true;
+            //OnBurned?.Invoke(this);
+            //_inBurnProcess = false;
+            //_currentBurnTime = 0f;
             
-            UpdateIngredientsUI();
+            //UpdateIngredientsUI();
             
-            whiteSmoke.gameObject.SetActive(false);
-            blackSmoke.gameObject.SetActive(true);
-            Debug.Log("[CookingPot] The food is burned!");
+            //whiteSmoke.gameObject.SetActive(false);
+            //blackSmoke.gameObject.SetActive(true);
+            //Debug.Log("[CookingPot] The food is burned!");
         }
         
         private void AnimateGreenCheck()
@@ -425,8 +432,7 @@ namespace Undercooked.Appliances
             OnCookFinished?.Invoke(this);
             IsCookFinished = true;
             _currentCookTime = 0f;
-            if (FunctionalityManager.Instance.foodBurning)
-                _burnCoroutine = StartCoroutine(Burn());
+            _burnCoroutine = StartCoroutine(Burn());
         }
         
         public void Pick()
@@ -444,17 +450,21 @@ namespace Undercooked.Appliances
 
         private bool TryDrop(IPickable pickable)
         {
-            if (Ingredients.Count >= MaxNumberIngredients) return false;
-
+            if (Ingredients.Count >= MaxNumberIngredients)
+            {
+                OnPotNegative?.Invoke(this);
+                return false;
+            }
             var ingredient = pickable as Ingredient;
             if (ingredient == null)
             {
                 Debug.LogWarning("[CookingPot] Can only drop ingredients into CookingPot", this);
+                OnPotNegative?.Invoke(this);
                 return false;
             }
             
             Ingredients.Add(ingredient);
-            OnIngredientAdded?.Invoke(this);
+            OnPotPositive?.Invoke(this);
             _totalCookTime += ingredient.CookTime;
             
             SetLiquidLevelAndColor();

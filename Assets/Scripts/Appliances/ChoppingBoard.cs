@@ -13,16 +13,21 @@ namespace Undercooked.Appliances
         [SerializeField] private Transform knife;
         [SerializeField] private Slider slider;
         
-        private float _finalProcessTime;
-        private float _currentProcessTime;
+        private float _finalProcessTime = 1;
+        private float _currentProcessTime = 0;
         private Coroutine _chopCoroutine;
-        private Ingredient _ingredient;
+        public Ingredient _ingredient;
         private bool _isChopping;
+
+        public float choppingPercentage => _currentProcessTime / _finalProcessTime;
 
         public delegate void ChoppingStatus(PlayerController playerController, bool completed);
         public static event ChoppingStatus OnChoppingStart;
         public static event ChoppingStatus OnChopping;
         public static event ChoppingStatus OnChoppingStop;
+
+        public static event ChoppingStatus OnChoppingPositive;
+        public static event ChoppingStatus OnChoppingNegative;
 
         public GameObject Cebolla;
 
@@ -63,14 +68,19 @@ namespace Undercooked.Appliances
             base.Interact(playerController);
             if (CurrentPickable == null ||
                 _ingredient == null ||
-                _ingredient.Status != IngredientStatus.Raw) return;
-            
+                _ingredient.Status != IngredientStatus.Raw)
+            {
+                OnChoppingNegative.Invoke(null, false);
+                return;
+            } 
+
             if (_chopCoroutine == null)
             {
                 _finalProcessTime = _ingredient.ProcessTime;
                 _currentProcessTime = 0f;
                 slider.value = 0f;
                 slider.gameObject.SetActive(true);
+                OnChoppingStart?.Invoke(LastPlayerControllerInteracting, false);
                 StartChopCoroutine();
                 return;
             }
@@ -83,7 +93,6 @@ namespace Undercooked.Appliances
 
         private void StartChopCoroutine()
         {
-            OnChoppingStart?.Invoke(LastPlayerControllerInteracting, false);
             _chopCoroutine = StartCoroutine(Chop());
         }
 
@@ -124,16 +133,29 @@ namespace Undercooked.Appliances
         {
             if (pickableToDrop is Ingredient)
             {
-                return TryDropIfNotOccupied(pickableToDrop);
+                bool res = TryDropIfNotOccupied(pickableToDrop);
+                if(!res)
+                    OnChoppingNegative.Invoke(null, false);
+
+                return res;
             }
+            OnChoppingNegative.Invoke(null, false);
             return false;
         }
 
         public override IPickable TryToPickUpFromSlot(IPickable playerHoldPickable)
         {
             // only allow Pickup after we finish chopping the ingredient. Essentially locking it in place.
-            if (CurrentPickable == null) return null;
-            if (_chopCoroutine != null) return null;
+            if (CurrentPickable == null)
+            {
+                OnChoppingNegative.Invoke(null, false);
+                return null;
+            }
+            if (_chopCoroutine != null)
+            { 
+                OnChoppingNegative.Invoke(null, false);
+                return null;
+            }
             
             var output = CurrentPickable;
             _ingredient = null;
@@ -141,6 +163,7 @@ namespace Undercooked.Appliances
             interactable?.ToggleHighlightOff();
             CurrentPickable = null;
             knife.gameObject.SetActive(true);
+            OnChoppingPositive.Invoke(null, false);
             return output;
         }
         

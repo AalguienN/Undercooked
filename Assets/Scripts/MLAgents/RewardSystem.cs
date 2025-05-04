@@ -10,16 +10,18 @@ namespace Undercooked
     public class RewardSystem : MonoBehaviour
     {
         [Header("Rewards")]
-        public float startCutRew = 0.0f;
+        [Header("Cutting")]
+        public float CutRew = 0.0f;
         public float duringCutRew = 0.0f;
-        public float endCutRew = 0.0f;
+        public float ChopingTableRew = 0.0f;
+        [Header("Plate")]
+        public float PlateRew = 0.0f; 
+        
+        [Header("CookingPot")]
+        public float cookingPotRew = 0.0f;
         public float cookRew = 0.0f;
-        public float burnRew  = 0.0f;
-        public float cleanRew = 0.0f;
+
         public float deliverRew = 0.0f;
-        public float expiredRew = 0.0f;
-        public int numberOfTooMuchFood = 0;
-        public float tooMuchFoodRew = 0.0f;
         public float addIngredientToPotRew = 0.0f;
 
         public float totalReward { get; private set; }
@@ -45,73 +47,85 @@ namespace Undercooked
 
         private void Update()
         {
-            var ingredients = GameObject.FindObjectsByType<Ingredient>(sortMode: FindObjectsSortMode.None);
-            if (ingredients.Length > numberOfTooMuchFood)
-            {
-                agent?.AddReward(tooMuchFoodRew);
-            }
-            
         }
 
         private void SubscribeRewardEvents()
         {
+            ChoppingBoard.OnChoppingStart += OnChopped;
             ChoppingBoard.OnChoppingStop += OnChopped;
             ChoppingBoard.OnChopping += OnChopping;
-            Sink.OnCleanStop += OnCleaned;
-            CookingPot.OnCookFinished += OnCooked;
-            CookingPot.OnBurned += OnBurned;
-            CookingPot.OnIngredientAdded += OnIngridienAdded;
-            OrderManager.OnOrderDelivered += OnDelivered;
-            OrderManager.OnOrderExpired += OnExpired;
+            ChoppingBoard.OnChoppingNegative += ChoppingTablePositive;
+            //ChoppingBoard.OnChoppingPositive += ChoppingTableNegative;
 
-            //Para orientar
-            ChoppingBoard.OnChoppingStart += OnStartChopping;
+            Plate.PlateNegative += PlateNeg;
+            //Plate.PlatePositive += PlatePos;
+
+            CookingPot.OnCookFinished += OnCooked;
+            //CookingPot.OnPotPositive += OnPotPos;
+            CookingPot.OnPotNegative += OnPotNeg;
+
+            OrderManager.OnOrderDelivered += OnDelivered;
         }
+
         private void UnsubscribeRewardEvents()
         {
+            ChoppingBoard.OnChoppingStart -= OnChopped;
             ChoppingBoard.OnChoppingStop -= OnChopped;
-            Sink.OnCleanStop -= OnCleaned;
+            ChoppingBoard.OnChopping -= OnChopping;
+            ChoppingBoard.OnChoppingNegative -= ChoppingTablePositive;
+            //ChoppingBoard.OnChoppingPositive -= ChoppingTableNegative;
+
+            Plate.PlateNegative -= PlateNeg;
+            //Plate.PlatePositive -= PlatePos;
+
             CookingPot.OnCookFinished -= OnCooked;
-            CookingPot.OnBurned -= OnBurned;
+            //CookingPot.OnPotPositive -= OnPotPos;
+            CookingPot.OnPotNegative -= OnPotNeg;
+
             OrderManager.OnOrderDelivered -= OnDelivered;
-            OrderManager.OnOrderExpired -= OnExpired;
-
-            //Para orientar
-            ChoppingBoard.OnChoppingStart -= OnStartChopping;
-        }
-
-        void OnStartChopping(PlayerController pc, bool done) {
-            if (pc == owner) Add(startCutRew);
         }
 
         void OnChopped(PlayerController pc, bool done)
         {
-            if (done && pc == owner) Add(endCutRew); //Solo el que lo ha hecho
+            Add(CutRew); //Solo el que lo ha hecho
         }
 
         void OnChopping(PlayerController pc, bool done)
         {
-            if (done && pc == owner) Add(duringCutRew); //Solo el que lo ha hecho
+            Add(duringCutRew); //Solo el que lo ha hecho
         }
 
-        void OnCleaned(PlayerController pc, bool done)
+        void ChoppingTablePositive(PlayerController pc, bool done)
         {
-            if (done && pc == owner) Add(cleanRew); //Solo el que lo ha hecho
+            Add(ChopingTableRew); //Solo el que lo ha hecho
+        }
+        void ChoppingTableNegative(PlayerController pc, bool done)
+        {
+            Add(-ChopingTableRew); //Solo el que lo ha hecho
         }
 
-        void OnIngridienAdded(CookingPot pot) 
+        void PlatePos()
         {
-            Add(addIngredientToPotRew);
+            Add(-ChopingTableRew); //Solo el que lo ha hecho
+        }
+
+        void PlateNeg()
+        {
+            Add(-ChopingTableRew); //Solo el que lo ha hecho
+        }
+
+        void OnPotPos(CookingPot pot) 
+        {
+            Add(cookingPotRew);
+        }
+        void OnPotNeg(CookingPot pot)
+        {
+            Add(-cookingPotRew);
         }
 
         void OnCooked(CookingPot pot)
         {
             Add(cookRew); //Cualquier jugador
-        }
-
-        void OnBurned(CookingPot pot)
-        {
-            Add(burnRew); //Cualquier jugador
         }
 
         void OnDelivered(Order order, int tip)
@@ -120,12 +134,6 @@ namespace Undercooked
                 Add(-deliverRew);
             else 
                 Add(deliverRew);
-        }
-
-        void OnExpired(Order order)
-        {
-            Add(expiredRew);
-            agent.OrderFailed();
         }
 
         // ─────────── añadir recompensa ───────────

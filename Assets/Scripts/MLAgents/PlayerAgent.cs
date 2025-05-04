@@ -1,4 +1,4 @@
-using Undercooked.Model;
+﻿using Undercooked.Model;
 using Undercooked.Player;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
@@ -6,292 +6,297 @@ using Unity.MLAgents.Sensors;
 using UnityEngine;
 using Undercooked.Managers;
 using Undercooked.Appliances;
+using System.Linq;
 
 namespace Undercooked
 {
     public class PlayerAgent : Agent
     {
-        public bool actionDebug = true; 
+        [Header("Debug")]
+        public bool actionDebug = false;
 
-        PlayerController player_controller;
-        InteractableController interactable_controller;
+        // Cool-down lengths (in FixedUpdate steps)
+        private const int DashCdFrames = 0;
+        private const int PickCdFrames = 0;
+        private const int InteractCdFrames = 0;
+
+        // Cool-down counters
+        private int dashCd = 0;
+        private int pickCd = 0;
+        private int interactCd = 0;
+
+        // Rising-edge helper
+        private readonly int[] lastDiscrete = new int[3];
+
+        // Controllers & helpers
+        private PlayerController player_controller;
+        private InteractableController interactable_controller;
         public ObjectRandomizer objectRandomizer;
+        private OrderManager OM;
 
+        // Input buffers
         private Vector2 movementInput;
         private bool dashInput;
         private bool pickupInput;
         private bool interactionInput;
+        private Vector3 oldPos = Vector3.zero;
 
-        private InteractableController _interactableController;
-        private OrderManager OM;
-        private bool endEpisode => orderFailedToReset == ordersFailed;
-        private int orderFailedToReset = 20;
-        private int ordersFailed = 0;
-
-
+        // Buffer sensors
         public BufferSensorComponent ingredientBuffer;
         public BufferSensorComponent plateBuffer;
         public BufferSensorComponent orderBuffer;
         public BufferSensorComponent ingredientCrateBuffer;
+
+        ChoppingBoard board;
+        IngredientCrate crate;
 
         private void Awake()
         {
             player_controller = GetComponent<PlayerController>();
             interactable_controller = GetComponentInChildren<InteractableController>();
 
-            var buffers = GetComponents<BufferSensorComponent>();
-            foreach (var b in buffers) {
-                switch (b.SensorName) {
-                    case "IngredientesSensor":
-                        ingredientBuffer = b;
-                        break;
-                    case "PlatesSensor":
-                        plateBuffer = b;
-                        break;
-                    case "OrderBuffer":
-                        orderBuffer = b;
-                        break;
-                    case "IngredientCrateBuffer":
-                        ingredientCrateBuffer = b;
-                        break;
+            foreach (var b in GetComponents<BufferSensorComponent>())
+            {
+                switch (b.SensorName)
+                {
+                    case "IngredientesSensor": ingredientBuffer = b; break;
+                    case "PlatesSensor": plateBuffer = b; break;
+                    case "IngredientCrateBuffer": ingredientCrateBuffer = b; break;
                     default:
-                        Debug.LogError($"{b.SensorName}: Sensor sin buffer sensor component asociado... Algo falla!");
+                        Debug.LogError($"{b.SensorName}: sensor name not recognised!");
                         break;
                 }
             }
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-            // objectRandomizer.Randomice();
-            OM = FindAnyObjectByType<OrderManager>();
-            _interactableController = GetComponentInChildren<InteractableController>();
-        }
-
         public override void OnEpisodeBegin()
         {
-            GetComponent<PlayerController>().Reset();
+            // Reset controllers & environment
+            player_controller.Reset();
+            interactable_controller.Reset();
+            OM = FindAnyObjectByType<OrderManager>();
+            OM.Reset();
 
-            _interactableController.Reset();
+            // --- Unity 6: FindObjectsByType<T>(FindObjectsSortMode.None) ---
+            foreach (CookingPot cp in FindObjectsByType<CookingPot>(FindObjectsSortMode.None))
+                cp.Reset();
+            foreach (Hob h in FindObjectsByType<Hob>(FindObjectsSortMode.None))
+                h.Reset();
+            foreach (ChoppingBoard cb in FindObjectsByType<ChoppingBoard>(FindObjectsSortMode.None))
+                cb.Reset();
+            foreach (Countertop ct in FindObjectsByType<Countertop>(FindObjectsSortMode.None))
+                ct.Reset();
+            FindAnyObjectByType<DishTray>()?.Reset();
+            // ------------------------------------------------------------
 
-            GameObject.FindAnyObjectByType<OrderManager>().Reset();
-            
-            foreach (CookingPot cp in GameObject.FindObjectsByType<CookingPot>(sortMode: FindObjectsSortMode.None))       cp.Reset();
-            
-            foreach (Hob h in GameObject.FindObjectsByType<Hob>(sortMode: FindObjectsSortMode.None))                      h.Reset();
-            
-            foreach (ChoppingBoard cb in GameObject.FindObjectsByType<ChoppingBoard>(sortMode: FindObjectsSortMode.None)) cb.Reset();
-
-            foreach (Countertop ct in GameObject.FindObjectsByType<Countertop>(sortMode: FindObjectsSortMode.None))       ct.Reset();
-
-            GameObject.FindAnyObjectByType<DishTray>()?.Reset();
-
-            foreach (Ingredient ing in GameObject.FindObjectsByType<Ingredient>(sortMode: FindObjectsSortMode.None))
-            {
+            // Destroy stray Ingredients and re-randomize
+            foreach (Ingredient ing in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
                 Destroy(ing.gameObject);
-            }
-
             objectRandomizer.Randomize();
-        }
 
-        private void AddObjectPositionObservation<T>(VectorSensor sensor, Vector3 refPos) where T : MonoBehaviour {
-            var obj = FindFirstObjectByType<T>();
-            if (obj != null) {
-                Vector3 pos = obj.transform.position;
-                sensor.AddObservation(pos.x - refPos.x);
-                sensor.AddObservation(pos.z - refPos.z);
-            }
-            else {
-                sensor.AddObservation(0f);
-                sensor.AddObservation(0f);
-            }
+            // Reset cooldowns & edge-detector
+            dashCd = pickCd = interactCd = 0;
+            lastDiscrete[0] = lastDiscrete[1] = lastDiscrete[2] = 0;
+            oldPos = Vector3.zero;
         }
 
         public override void CollectObservations(VectorSensor sensor)
         {
-            //En total 15 floats no variables 
-
-            // Observation 1 (Espacio 2): Posici�n del agente en el mundo:
-            // En el futuro quiz� estar�a mejor con posiciones relativas si queremos entrenar varios a la vez
-            // Pero si hacemos eso tendremos que tocar varios managers.... igual no interesa
             Vector3 pos = transform.position;
-            //sensor.AddObservation(pos.x);
-            //sensor.AddObservation(pos.z);
+            sensor.AddObservation(pos.x - oldPos.x);
+            sensor.AddObservation(pos.z - oldPos.z);
+            oldPos = pos;
 
-            sensor.AddObservation(transform.rotation.y);
-
-            //Observación 2 (espacio 2): Posición de dish tray en el mundo
-            //Vector3 DishTrayPos = FindFirstObjectByType<DishTray>().transform.position;
-            //sensor.AddObservation(DishTrayPos.x - pos.x);
-            //sensor.AddObservation(DishTrayPos.z - pos.z);
-            Vector2 refPos = new Vector2(pos.x, pos.z);
-            // Observación 3: Posición del CookingPot más cercano (2 floats)
-            AddObjectPositionObservation<CookingPot>(sensor, refPos);
-
-            // Observación 4: Posición del Hob más cercano (2 floats)
-            AddObjectPositionObservation<Hob>(sensor, refPos);
-
-            // Observación 5: Posición del ChoppingBoard más cercano (2 floats)
-            AddObjectPositionObservation<ChoppingBoard>(sensor, refPos);
-
-            // Observación 6: Posición del DeliverCounterTop más cercano (2 floats)
-            AddObjectPositionObservation<DeliverCountertop>(sensor, refPos);
-
-            //Observación  7: Objeto cargado por el personaje (3 floats)
             var carried = player_controller.HeldObject;
-
-            if (carried == null) { // Nada en la mano
-                sensor.AddObservation(-1f); //Codificado como vacío
-                sensor.AddObservation(-1f); // tipo
-                sensor.AddObservation(-1f); // estado o extra info
-            }
-            else if (carried is Ingredient ingredient) { // Observamos ingrediente: tipo y estado
-                sensor.AddObservation(0f); //Codificado como ingrediente
-                sensor.AddObservation((float)ingredient.Type);
-                sensor.AddObservation((float)ingredient.Status);
-            }
-            else if (carried is Plate plate) { // Observamos plato: limpieza y nº de ingredientes
-                sensor.AddObservation(1f); //Codificado como plato
-                sensor.AddObservation(plate.IsClean ? 1f : 0f);
-                sensor.AddObservation(Mathf.Clamp01(plate.Ingredients.Count / 3f)); // suponiendo máx 3
-            }
-            else if (carried is CookingPot pot) { // Observamos olla: ¿está cocinando? y nº de ingredientes
-                sensor.AddObservation(2f);                              // Codificado como olla
-                int n = pot.Ingredients.Count;
-                sensor.AddObservation(n);                               // nº de ingredientes
-                if (n > 0)
-                    sensor.AddObservation((float)pot.Ingredients[0].Type);
-                else
-                    sensor.AddObservation(-1f);  // default when empty
-                
-            }
-            else { // Objeto no reconocido: observa algo por defecto
-                sensor.AddObservation(-2f); // tipo desconocido
-                sensor.AddObservation(0f);
-                sensor.AddObservation(0f);
-            }
-
-            foreach (var o in OM.Orders)
+            if (carried == null)
             {
-                float tNorm = o.RemainingTime / o.InitialRemainingTime;
-                float ingrediente1 = (float)o.Ingredients[0].type;
-                float ingrediente2 = (float)o.Ingredients[1].type;
-                float ingrediente3 = (float)o.Ingredients[2].type;
-
-                float[] obs = new float[4] {
-                    Mathf.Clamp(tNorm, 0f, 1f),
-                    ingrediente1,
-                    ingrediente2,
-                    ingrediente3
-                };
-
-                orderBuffer.AppendObservation(obs);
+                sensor.AddObservation(-1f);
+                sensor.AddObservation(-1f);
+            }
+            else if (carried is Ingredient i)
+            {
+                sensor.AddObservation(0f);
+                sensor.AddObservation((float)i.Status);
+            }
+            else if (carried is Plate p)
+            {
+                sensor.AddObservation(1f);
+                sensor.AddObservation(Mathf.Clamp01(p.Ingredients.Count / 3f));
+            }
+            else if (carried is CookingPot pot)
+            {
+                sensor.AddObservation(2f);
+                sensor.AddObservation(pot.Ingredients.Count);
+            }
+            else
+            {
+                sensor.AddObservation(-1f);
+                sensor.AddObservation(-1f);
             }
 
-            foreach (var ing in FindObjectsByType<Ingredient>(sortMode:FindObjectsSortMode.InstanceID))
+            // Add the position of everything else
+            AddObjectPositionObservation<IngredientCrate>(sensor, pos);
+            crate = FindFirstObjectByType<IngredientCrate>();
+
+            AddObjectPositionObservation<ChoppingBoard>(sensor, pos);
+            board = FindFirstObjectByType<ChoppingBoard>();
+            sensor.AddObservation(board.choppingPercentage);
+
+            AddObjectPositionObservation<Hob>(sensor, pos);
+            AddObjectPositionObservation<CookingPot>(sensor, pos);
+            CookingPot Cpot = FindFirstObjectByType<CookingPot>();
+            sensor.AddObservation((float)(Cpot?.Ingredients?.Count ?? 0));
+
+            AddObjectPositionObservation<DeliverCountertop>(sensor, pos);
+
+            //Añadir observacion del plato, y si tiene algo dentro
+            Plate plate = FindFirstObjectByType<Plate>();
+            if (plate != null)
+            {
+                Vector3 ppos = plate.transform.position;
+                sensor.AddObservation(new float[] {
+                    ppos.x - pos.x, ppos.z - pos.z, plate.Ingredients.Count
+                });
+            }
+            else { // por si quitamos el plato en algun momento del entrenamiento para que no moleste, poner los valores a 0
+                sensor.AddObservation(new float[] {
+                    0,0,0
+                });
+            }
+            
+            // ingridient positions
+            foreach (Ingredient ing in FindObjectsByType<Ingredient>(FindObjectsSortMode.None))
             {
                 Vector3 ipos = ing.transform.position;
-                float[] obs = new float[] //Tamaño de 5
-                {
-                    (ipos.x - pos.x), (ipos.z - pos.z), (float)ing.Type, (float)ing.Status
-                };
-                ingredientBuffer.AppendObservation(obs);
+                ingredientBuffer.AppendObservation(new float[] {
+                    ipos.x - pos.x, ipos.z - pos.z, (float)ing.Status
+                });
             }
+        }
+        private void RewardForMovingTowards(Vector3 targetWorldPos, float dotThreshold, float rewardAmount)
+        {
+            // Build 2D vectors for horizontal plane
+            Vector2 moveDir = new Vector2(movementInput.x, movementInput.y);
+            Vector2 toTarget = new Vector2(
+                targetWorldPos.x - transform.position.x,
+                targetWorldPos.z - transform.position.z
+            );
 
-            foreach (var plate in FindObjectsByType<Plate>(sortMode: FindObjectsSortMode.InstanceID))
+            // Only if both vectors are non-zero
+            if (moveDir.sqrMagnitude > 1e-4f && toTarget.sqrMagnitude > 1e-4f)
             {
-                Vector3 ipos = plate.transform.position;
-                float[] obs = new float[] //Tamaño de 5
+                float dot = Vector2.Dot(moveDir.normalized, toTarget.normalized);
+                if (dot >= dotThreshold)
                 {
-                    (ipos.x - pos.x), (ipos.z - pos.z), plate.IsClean ? 1 : 0, plate.Ingredients.Count
-                };
-                plateBuffer.AppendObservation(obs);
-            }
-
-            foreach (var ic in FindObjectsByType<IngredientCrate>(sortMode: FindObjectsSortMode.None)) {
-                Vector3 ipos = ic.transform.position;
-                float[] obs = new float[] {
-                    (ipos.x - pos.x), (ipos.z - pos.z), (float) ic.type
-                };
+                    AddReward(rewardAmount);
+                    if (actionDebug)
+                        Debug.Log($"[MoveTowards] +{rewardAmount:F4} (dot={dot:F2}) → {targetWorldPos}");
+                }
             }
         }
 
-        public override void OnActionReceived(ActionBuffers actionBuffers)
+        private void AddObjectPositionObservation<T>(VectorSensor sensor, Vector3 refPos) where T : MonoBehaviour
         {
-            // Continuous for movement:
-            a_MoveX(actionBuffers.ContinuousActions[0]);
-            a_MoveY(actionBuffers.ContinuousActions[1]);
-
-            // Discrete for dash / pickup / interact:
-            var da = actionBuffers.DiscreteActions;
-            a_Dash(da[0]);
-            a_Pickup(da[1]);
-            a_Interact(da[2]);
+            var obj = FindFirstObjectByType<T>();
+            if (obj != null)
+            {
+                Vector3 p = obj.transform.position;
+                sensor.AddObservation(p.x - refPos.x);
+                sensor.AddObservation(p.z - refPos.z);
+            }
+            else
+            {
+                sensor.AddObservation(0f);
+                sensor.AddObservation(0f);
+            }
         }
 
-        // Lo separo por si queremos hacer algo entre medias antes de actualizar el valor
-        private void a_MoveX(float value)
+        public override void OnActionReceived(ActionBuffers a)
         {
-            if (actionDebug) Debug.Log($"a_MoveX {value}");
-            movementInput.x = value;
+            dashCd = Mathf.Max(0, dashCd - 1);
+            pickCd = Mathf.Max(0, pickCd - 1);
+            interactCd = Mathf.Max(0, interactCd - 1);
+
+            movementInput.x = a.ContinuousActions[0];
+            movementInput.y = a.ContinuousActions[1];
+
+            var d = a.DiscreteActions;
+            bool dashPressed = d[0] == 1 && lastDiscrete[0] == 0 && dashCd == 0;
+            bool pickPressed = d[1] == 1 && lastDiscrete[1] == 0 && pickCd == 0;
+            bool intPressed = d[2] == 1 && lastDiscrete[2] == 0 && interactCd == 0;
+
+            dashInput = dashPressed;
+            pickupInput = pickPressed;
+            interactionInput = intPressed;
+
+            if (dashPressed) dashCd = DashCdFrames;
+            if (pickPressed) pickCd = PickCdFrames;
+            if (intPressed) interactCd = InteractCdFrames;
+
+            lastDiscrete[0] = d[0];
+            lastDiscrete[1] = d[1];
+            lastDiscrete[2] = d[2];
+
+            // 1) Held‐object & status
+            var heldObj = player_controller.HeldObject;
+            var heldIng = heldObj as Ingredient;
+            bool holdingNothing = heldObj == null;
+            bool holdingIngredient = heldIng != null;
+            bool isHoldRaw = holdingIngredient && heldIng.Status == IngredientStatus.Raw;
+            bool isHoldProcessed = holdingIngredient && heldIng.Status == IngredientStatus.Processed;
+
+            // 2) Cutting‐board & its single ingredient var
+            var board = FindFirstObjectByType<ChoppingBoard>();
+            var boardIngredient = board != null
+                ? board._ingredient as Ingredient
+                : null;
+
+            // 3) State‐flags for the board
+            bool boardEmpty = board != null && boardIngredient == null;
+            bool boardHasRaw = boardIngredient != null
+                                        && boardIngredient.Status == IngredientStatus.Raw;
+            bool boardHasProcessed = boardIngredient != null
+                                        && boardIngredient.Status == IngredientStatus.Processed;
+
+            var sceneIngredients = FindObjectsByType<Ingredient>(FindObjectsSortMode.None);
+            int rawCount = sceneIngredients.Count(ing => ing.Status == IngredientStatus.Raw);
+            var rawIngridients = sceneIngredients.Where(ing => ing.Status == IngredientStatus.Raw).ToList();
+
+            // 4) Rewards
+            if (holdingNothing && boardEmpty && rawCount == 0)
+                RewardForMovingTowards(crate.transform.position, 0.8f, 0.002f);
+
+            // Raw in hand → empty board
+            if (isHoldRaw && boardEmpty)
+                RewardForMovingTowards(board.transform.position, 0.8f, 0.001f);
+
+            // Empty-handed → board empty, go to closest raw ingridient
+            var nearestRaw = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Where(ing => ing.Status == IngredientStatus.Raw)
+            .OrderBy(ing => Vector3.SqrMagnitude(ing.transform.position - transform.position)).FirstOrDefault();
+
+            if (holdingNothing && boardEmpty && nearestRaw != null)
+                RewardForMovingTowards(nearestRaw.transform.position, 0.8f, 0.001f);
+            
+            // Penalty for board already processed
+            if (boardHasProcessed)
+                AddReward(-0.0001f);
         }
 
-        private void a_MoveY(float value)
+        public override void WriteDiscreteActionMask(IDiscreteActionMask m)
         {
-            if (actionDebug) Debug.Log($"a_MoveY {value}");
-            movementInput.y = value;
+            m.SetActionEnabled(0, 1, player_controller.isDashingPossible && dashCd == 0);
+            bool canPickOrDrop =
+                (interactable_controller.CurrentInteractable != null ||
+                 player_controller.HeldObject != null) && pickCd == 0;
+            m.SetActionEnabled(1, 1, canPickOrDrop);
+            bool canInteract = interactable_controller.CurrentInteractable != null && interactCd == 0;
+            m.SetActionEnabled(2, 1, canInteract);
         }
 
-        private void a_Dash(int value)
-        {
-            if (actionDebug) Debug.Log($"a_Dash {value}");
-            dashInput = (value == 1);
-        }
-
-        private void a_Pickup(int value)
-        {
-            if (actionDebug) Debug.Log($"a_Pickup {value}");
-            pickupInput = (value == 1);
-        }
-
-        private void a_Interact(int value)
-        {
-            if (actionDebug) Debug.Log($"a_Interact {value}");
-            interactionInput = (value == 1);
-        }
-
-        public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
-        {
-            // Branch 0 = dash (0=no dash, 1=dash)
-            actionMask.SetActionEnabled(0, 1, player_controller.isDashingPossible);
-
-            // Branch 1 = pickup/drop (0=no, 1=yes)
-            bool canPickOrDrop =  interactable_controller.CurrentInteractable != null ||
-                                  player_controller.HeldObject != null;
-            actionMask.SetActionEnabled(1, 1, canPickOrDrop);
-
-            // Branch 2 = interact (0=no, 1=yes)
-            bool canInteract = interactable_controller.CurrentInteractable != null;
-            actionMask.SetActionEnabled(2, 1, canInteract);
-        }
-
-
-        public void OrderFailed()
-        {
-            ordersFailed++;
-        }
-
-        // Update is called once per frame
         private void Update()
         {
-            player_controller.SetMLAgentInput(movementInput, dashInput, pickupInput, interactionInput);
-
-            if (endEpisode)
-            {
-                ordersFailed = 0;
-                EndEpisode();
-            }
+            player_controller.SetMLAgentInput(
+                movementInput, dashInput, pickupInput, interactionInput);
         }
     }
 }

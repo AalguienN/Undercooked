@@ -26,10 +26,7 @@ namespace Undercooked
 
                     // Set the reward values you want for certain actions, negativa, 0, positive
                     foreach (RewardSystem rs in FindObjectsByType<RewardSystem>(sortMode: FindObjectsSortMode.None)) { 
-                        rs.endCutRew  = 0.1f;
                         rs.cookRew  = 0.0f;
-                        rs.burnRew  = 0.0f;
-                        rs.cleanRew = 0.0f;
                         rs.deliverRew = 0.0f;
                     }
                 }

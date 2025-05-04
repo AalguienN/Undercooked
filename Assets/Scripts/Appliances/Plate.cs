@@ -1,8 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Undercooked.Model;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using static Undercooked.Appliances.ChoppingBoard;
 
 namespace Undercooked.Appliances
 {
@@ -23,6 +24,10 @@ namespace Undercooked.Appliances
         private Rigidbody _rigidbody;
         private Collider _collider;
         private readonly List<Ingredient> _ingredients = new List<Ingredient>(MaxNumberIngredients);
+
+        public delegate void numb();
+        public static event numb PlatePositive;
+        public static event numb PlateNegative;
 
         public bool IsClean { get; private set; } = true;
         public List<Ingredient> Ingredients => _ingredients;
@@ -81,10 +86,16 @@ namespace Undercooked.Appliances
                 ingredient.transform.SetPositionAndRotation(Slot.transform.position, Quaternion.identity);
             }
             UpdateIconsUI();
-            
+
             if (CheckSoupIngredients(ingredients))
             {
                 EnableSoup(ingredients[0]);
+                PlatePositive?.Invoke();
+            }
+            // wrong soup attempt → negative
+            else
+            {
+                PlateNegative?.Invoke();
             }
             // not a soup
             return true;
@@ -163,8 +174,7 @@ namespace Undercooked.Appliances
         [ContextMenu("SetDirty")]
         public void SetDirty()
         {
-            meshRenderer.material = dirtyMaterial;
-            IsClean = false;
+            SetClean();
             DisableSoup();
         }
         
@@ -200,6 +210,7 @@ namespace Undercooked.Appliances
                     break;
                 case Ingredient ingredient:
                     Debug.Log("[Plate] Trying to dropping Ingredient into Plate! Not implemented");
+                    PlateNegative?.Invoke();
                     break;
                 case Plate plate:
                     //Debug.Log("[Plate] Trying to drop something from a plate into other plate! We basically swap contents");
@@ -209,6 +220,7 @@ namespace Undercooked.Appliances
                     return false;
                 default:
                     Debug.LogWarning("[Plate] Drop not recognized", this);
+                    PlateNegative?.Invoke();
                     break;
             }
             return false;

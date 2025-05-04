@@ -37,8 +37,11 @@ namespace Undercooked.Appliances
         {
             if (CurrentPickable == null)
             {
-                _animator.SetTrigger(OpenHash);
-                return Instantiate(ingredientPrefab, Slot.transform.position, Quaternion.identity);
+                if (FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Length < 6)
+                {
+                    _animator.SetTrigger(OpenHash);
+                    return Instantiate(ingredientPrefab, Slot.transform.position, Quaternion.identity);
+                }
             }
 
             var output = CurrentPickable;
