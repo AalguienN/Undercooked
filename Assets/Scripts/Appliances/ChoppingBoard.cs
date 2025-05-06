@@ -163,7 +163,7 @@ namespace Undercooked.Appliances
             interactable?.ToggleHighlightOff();
             CurrentPickable = null;
             knife.gameObject.SetActive(true);
-            OnChoppingPositive.Invoke(null, false);
+            //OnChoppingPositive.Invoke(null, false);
             return output;
         }
         

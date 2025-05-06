@@ -15,7 +15,7 @@ namespace Undercooked.Model
         [Tooltip("Pivot where IPickables could be dropped/pickedUp")]
         [SerializeField] protected Transform slot;
 
-        protected IPickable CurrentPickable { get; set; }
+        public IPickable CurrentPickable { get; set; }
         protected PlayerController LastPlayerControllerInteracting;
         private readonly List<MeshRenderer> _meshes = new List<MeshRenderer>();
         private MaterialPropertyBlock _materialBlock;

@@ -7,6 +7,7 @@ using UnityEngine;
 using Undercooked.Managers;
 using Undercooked.Appliances;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 namespace Undercooked
 {
@@ -16,14 +17,14 @@ namespace Undercooked
         public bool actionDebug = false;
 
         // Cool-down lengths (in FixedUpdate steps)
-        private const int DashCdFrames = 0;
-        private const int PickCdFrames = 0;
-        private const int InteractCdFrames = 0;
+        private const int DashCdFrames = 20;
+        private const int PickCdFrames = 20;
+        private const int InteractCdFrames = 10;
 
         // Cool-down counters
-        private int dashCd = 0;
-        private int pickCd = 0;
-        private int interactCd = 0;
+        private int dashCd = 150;
+        private int pickCd = 20;
+        private int interactCd = 1;
 
         // Rising-edge helper
         private readonly int[] lastDiscrete = new int[3];
@@ -49,7 +50,8 @@ namespace Undercooked
 
         ChoppingBoard board;
         IngredientCrate crate;
-
+        CookingPot pot;
+        Hob hob;
         private void Awake()
         {
             player_controller = GetComponent<PlayerController>();
@@ -135,17 +137,32 @@ namespace Undercooked
             }
 
             // Add the position of everything else
-            AddObjectPositionObservation<IngredientCrate>(sensor, pos);
             crate = FindFirstObjectByType<IngredientCrate>();
+            AddObjectPositionObservation<IngredientCrate>(sensor, pos);
 
             AddObjectPositionObservation<ChoppingBoard>(sensor, pos);
             board = FindFirstObjectByType<ChoppingBoard>();
+
+            if (board._ingredient == null)
+                sensor.AddObservation(0);
+            else if (board._ingredient.Status == IngredientStatus.Raw)
+                sensor.AddObservation(1);
+            else if (board._ingredient.Status == IngredientStatus.Processed)
+                sensor.AddObservation(2);
+
             sensor.AddObservation(board.choppingPercentage);
 
             AddObjectPositionObservation<Hob>(sensor, pos);
+            hob = FindFirstObjectByType<Hob>();
+            if (hob?.CurrentPickable == null)
+                sensor.AddObservation(0);
+            else 
+                sensor.AddObservation(1);
+
+
             AddObjectPositionObservation<CookingPot>(sensor, pos);
-            CookingPot Cpot = FindFirstObjectByType<CookingPot>();
-            sensor.AddObservation((float)(Cpot?.Ingredients?.Count ?? 0));
+            pot = FindFirstObjectByType<CookingPot>();
+            sensor.AddObservation((float)(pot?.Ingredients?.Count ?? 0));
 
             AddObjectPositionObservation<DeliverCountertop>(sensor, pos);
 
@@ -182,6 +199,28 @@ namespace Undercooked
                 targetWorldPos.z - transform.position.z
             );
 
+            // Only if both vectors are non-zero
+            if (moveDir.sqrMagnitude > 1e-4f && toTarget.sqrMagnitude > 1e-4f)
+            {
+                float dot = Vector2.Dot(moveDir.normalized, toTarget.normalized);
+                if (dot >= dotThreshold)
+                {
+                    AddReward(rewardAmount);
+                    if (actionDebug)
+                        Debug.Log($"[MoveTowards] +{rewardAmount:F4} (dot={dot:F2}) → {targetWorldPos}");
+                }
+            }
+        }
+
+        private void RewardForMovingAway(Vector3 targetWorldPos, float dotThreshold, float rewardAmount)
+        {
+            // Build 2D vectors for horizontal plane
+            Vector2 moveDir = new Vector2(movementInput.x, movementInput.y);
+            Vector2 toTarget = new Vector2(
+                targetWorldPos.x - transform.position.x,
+                targetWorldPos.z - transform.position.z
+            );
+            toTarget = -toTarget;
             // Only if both vectors are non-zero
             if (moveDir.sqrMagnitude > 1e-4f && toTarget.sqrMagnitude > 1e-4f)
             {
@@ -258,28 +297,63 @@ namespace Undercooked
             bool boardHasProcessed = boardIngredient != null
                                         && boardIngredient.Status == IngredientStatus.Processed;
 
+            bool coockingPotFull = pot?.Ingredients.Count == 3;
+            bool coockingPotEmpty = pot?.Ingredients.Count == 0;
+
             var sceneIngredients = FindObjectsByType<Ingredient>(FindObjectsSortMode.None);
             int rawCount = sceneIngredients.Count(ing => ing.Status == IngredientStatus.Raw);
             var rawIngridients = sceneIngredients.Where(ing => ing.Status == IngredientStatus.Raw).ToList();
 
+            int procesedCount = sceneIngredients.Count(ing => ing.Status == IngredientStatus.Processed);
+            var procesedIngridients = sceneIngredients.Where(ing => ing.Status == IngredientStatus.Processed).ToList();
+
             // 4) Rewards
-            if (holdingNothing && boardEmpty && rawCount == 0)
-                RewardForMovingTowards(crate.transform.position, 0.8f, 0.002f);
+            //float distToCrate = (transform.position - crate.transform.position).magnitude;
+            if (holdingNothing && boardEmpty && rawCount == 0 && procesedCount == 0)// && distToCrate > 25)
+                RewardForMovingTowards(crate.transform.position, 0.8f, 0.004f);
+
+            if (holdingNothing && boardEmpty && rawCount == 0 && procesedCount == 0)
+                RewardForMovingAway(crate.transform.position, -0.5f, -0.006f);
 
             // Raw in hand → empty board
-            if (isHoldRaw && boardEmpty)
-                RewardForMovingTowards(board.transform.position, 0.8f, 0.001f);
+            if (isHoldRaw && boardEmpty && procesedCount == 0)
+                RewardForMovingTowards(board.transform.position, 0.8f, 0.00325f);
+            if (isHoldRaw && boardEmpty && procesedCount == 0)
+                RewardForMovingAway(board.transform.position, -0.5f, -0.005f);
 
             // Empty-handed → board empty, go to closest raw ingridient
             var nearestRaw = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Where(ing => ing.Status == IngredientStatus.Raw)
             .OrderBy(ing => Vector3.SqrMagnitude(ing.transform.position - transform.position)).FirstOrDefault();
 
-            if (holdingNothing && boardEmpty && nearestRaw != null)
-                RewardForMovingTowards(nearestRaw.transform.position, 0.8f, 0.001f);
-            
+            if (holdingNothing && boardEmpty && nearestRaw != null && procesedCount == 0)
+                RewardForMovingTowards(nearestRaw.transform.position, 0.8f, 0.0025f);
+            if (holdingNothing && boardEmpty && nearestRaw != null && procesedCount == 0)
+                RewardForMovingAway(nearestRaw.transform.position, -0.5f, -0.004f);
             // Penalty for board already processed
             if (boardHasProcessed)
-                AddReward(-0.0001f);
+                AddReward(-0.001f);
+
+            if (hob?.CurrentPickable == null)
+                AddReward(-0.001f);
+
+            if (isHoldProcessed )
+                RewardForMovingTowards(pot.transform.position, 0.8f, 0.001f);
+            if (isHoldProcessed)
+                RewardForMovingAway(pot.transform.position, -0.5f, -0.001f);
+
+            var nearestProc = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Where(ing => ing.Status == IngredientStatus.Processed)
+            .OrderBy(ing => Vector3.SqrMagnitude(ing.transform.position - transform.position)).FirstOrDefault();
+
+            if (holdingNothing && !coockingPotFull && nearestProc != null && procesedCount > 0)
+                RewardForMovingTowards(nearestProc.transform.position, 0.8f, 0.0005f);
+            if (holdingNothing && !coockingPotFull && nearestProc != null && procesedCount > 0)
+                RewardForMovingAway(nearestProc.transform.position, -0.5f, -0.0005f);
+
+            var carried = player_controller.HeldObject;
+            if (carried is CookingPot)
+            {
+                AddReward(-0.1f);
+            }
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask m)
