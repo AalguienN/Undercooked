@@ -3005,7 +3005,7 @@ PrefabInstance:
     - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: c5340bf6a2cccca41b56d6f73cfdc6fb, type: 3}
     - target: {fileID: 2602562813290199505, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 21
@@ -3074,10 +3074,7 @@ PrefabInstance:
       propertyPath: objectRandomizer
       value: 
       objectReference: {fileID: 259057598}
-    m_RemovedComponents:
-    - {fileID: 7482739928700119883, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-    - {fileID: 6104383790897338387, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
-    - {fileID: 1884015340581741136, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
