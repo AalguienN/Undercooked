@@ -1,0 +1,65 @@
+{
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.1.1+cpu"
+    },
+    "cookingGrid2": {
+        "checkpoints": [
+            {
+                "steps": 499965,
+                "file_path": "results\\ppo\\cookingGrid2\\cookingGrid2-499965.onnx",
+                "reward": 10.262402296066284,
+                "creation_time": 1748384323.443998,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid2\\cookingGrid2-499965.pt"
+                ]
+            },
+            {
+                "steps": 500029,
+                "file_path": "results\\ppo\\cookingGrid2\\cookingGrid2-500029.onnx",
+                "reward": 10.262402296066284,
+                "creation_time": 1748384324.155768,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid2\\cookingGrid2-500029.pt"
+                ]
+            },
+            {
+                "steps": 500029,
+                "file_path": "results\\ppo\\cookingGrid2\\cookingGrid2-500029.onnx",
+                "reward": null,
+                "creation_time": 1748384367.6011732,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid2\\cookingGrid2-500029.pt"
+                ]
+            },
+            {
+                "steps": 500029,
+                "file_path": "results\\ppo\\cookingGrid2\\cookingGrid2-500029.onnx",
+                "reward": null,
+                "creation_time": 1748384408.7335696,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid2\\cookingGrid2-500029.pt"
+                ]
+            },
+            {
+                "steps": 554125,
+                "file_path": "results\\ppo\\cookingGrid2\\cookingGrid2-554125.onnx",
+                "reward": null,
+                "creation_time": 1748385992.2119265,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid2\\cookingGrid2-554125.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 554125,
+            "file_path": "results\\ppo\\cookingGrid2.onnx",
+            "reward": null,
+            "creation_time": 1748385992.2119265,
+            "auxillary_file_paths": [
+                "results\\ppo\\cookingGrid2\\cookingGrid2-554125.pt"
+            ]
+        }
+    }
+}

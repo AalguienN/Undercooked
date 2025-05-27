@@ -28,7 +28,7 @@ namespace Undercooked
         private int interactCd = 1;
 
         // Rising-edge helper
-        private readonly int[] lastDiscrete = new int[3];
+        private readonly int[] lastDiscrete = new int[4];
 
         // Controllers & helpers
         private PlayerController player_controller;
@@ -355,6 +355,9 @@ namespace Undercooked
                 case 7:
                     movementInput = new Vector2(-1, 1);
                     break;
+                case 8:
+                    movementInput = new Vector2(0,0);
+                    break;
             } 
 
             if (rewardSystem.UsarRailes) {
@@ -408,7 +411,7 @@ namespace Undercooked
             if (holdingNothing && boardEmpty && rawCount == 0 && procesedCount == 0)
             {
                 RewardForMovingTowards(crate.transform.position, 0.8f, 0.0004f);
-                RewardForMovingAway(crate.transform.position, -0.5f, -0.01f);
+                RewardForMovingAway(crate.transform.position, -0.8f, -0.01f);
                 //RewardForLookingAt(crate.transform.position, 0.9f, 0.0001f);
                 //RewardForProximity(crate.transform.position, 1f, 5f, 0.01f, 0.005f);
             }
@@ -417,8 +420,8 @@ namespace Undercooked
             // Raw in hand → empty board
             if (isHoldRaw && boardEmpty && procesedCount == 0)
             {
-                RewardForMovingTowards(board.transform.position, 0.8f, 0.1f);
-                RewardForMovingAway(board.transform.position, -0.5f, -0.01f);
+                RewardForMovingTowards(board.transform.position, 0.8f, 0.01f);
+                RewardForMovingAway(board.transform.position, -0.8f, -0.01f);
                 RewardForLookingAt(board.transform.position, 0.9f, 0.001f);
                 RewardForProximity(board.transform.position, 1f, 5f, 0.01f, 0.008f);
             }
@@ -432,20 +435,20 @@ namespace Undercooked
             if (holdingNothing && boardEmpty && nearestRaw != null && procesedCount == 0)
             {
                 RewardForMovingTowards(nearestRaw.transform.position, 0.8f, 0.000025f);
-                RewardForMovingAway(nearestRaw.transform.position, -0.5f, -0.00004f);
+                RewardForMovingAway(nearestRaw.transform.position, -0.5f, -0.000025f);
                 //RewardForLookingAt(nearestRaw.transform.position, 0.9f, 0.001f);
             }
             // Penalty for board already processed
             if (boardHasProcessed)
                 rewardSystem.Add(-0.001f);
 
-            if (hob?.CurrentPickable == null)
-                rewardSystem.Add(-1f);
+            //if (hob?.CurrentPickable == null)
+            //    rewardSystem.Add(-1f);
 
             if (isHoldProcessed)
             {
-                RewardForMovingTowards(pot.transform.position, 0.8f, 0.03f);
-                RewardForMovingAway(pot.transform.position, -0.5f, -0.015f);
+                RewardForMovingTowards(pot.transform.position, 0.8f, 0.01f);
+                RewardForMovingAway(pot.transform.position, -0.5f, -0.01f);
                 RewardForLookingAt(pot.transform.position, 0.9f, 0.001f);
                 RewardForProximity(pot.transform.position, 1f, 5f, 0.01f, 0.01f);
 
@@ -463,10 +466,11 @@ namespace Undercooked
 
             }
 
-            var carried = player_controller.HeldObject;
-            if (carried is CookingPot) {
-                rewardSystem.Add(-0.1f);
-            }
+            //var carried = player_controller.HeldObject;
+            //if (carried is CookingPot)
+            //{
+            //    rewardSystem.Add(-0.5f);
+            //}
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask m)

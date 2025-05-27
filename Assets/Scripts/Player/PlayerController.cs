@@ -242,6 +242,14 @@ namespace Undercooked.Player
             {
                 if (interactable == null) return;
 
+                Debug.Log(interactable.GetType());
+
+                if (interactable is CookingPot || interactable is Hob)
+                {
+                    Debug.Log("[PlayerController] Cannot pickup CookingPot directly");
+                    return;
+                }
+
                 IPickable picked = null;
 
                 // direct pick

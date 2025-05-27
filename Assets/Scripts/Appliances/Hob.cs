@@ -12,6 +12,7 @@ namespace Undercooked.Appliances
             TryToDropIntoSlot(cp);
         }
 
+
         private void Start()
         {
             cp = Slot.GetChild(0).GetComponent<CookingPot>();

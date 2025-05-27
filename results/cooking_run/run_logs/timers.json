@@ -2,7 +2,7 @@
     "name": "root",
     "metadata": {
         "timer_format_version": "0.1.0",
-        "start_time_seconds": "1748358362",
+        "start_time_seconds": "1748359313",
         "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
         "command_line_arguments": "C:\\Users\\adri3\\anaconda3\\envs\\mlagents\\Scripts\\mlagents-learn results/cooking_run/configuration.yaml",
         "mlagents_version": "1.1.0",
@@ -10,31 +10,31 @@
         "communication_protocol_version": "1.5.0",
         "pytorch_version": "2.1.1+cpu",
         "numpy_version": "1.23.5",
-        "end_time_seconds": "1748358375"
+        "end_time_seconds": "1748359319"
     },
-    "total": 12.71207179990597,
+    "total": 6.090945299947634,
     "count": 1,
-    "self": 0.03859549993649125,
+    "self": 0.02562069962732494,
     "children": {
         "run_training.setup": {
-            "total": 0.1656138999387622,
+            "total": 0.2195990001782775,
             "count": 1,
-            "self": 0.1656138999387622
+            "self": 0.2195990001782775
         },
         "TrainerController.start_learning": {
-            "total": 12.507862400030717,
+            "total": 5.845725600142032,
             "count": 1,
-            "self": 0.00018490012735128403,
+            "self": 0.00021590013056993484,
             "children": {
                 "TrainerController._reset_env": {
-                    "total": 12.507629500003532,
+                    "total": 5.84544980013743,
                     "count": 1,
-                    "self": 12.507629500003532
+                    "self": 5.84544980013743
                 },
                 "TrainerController._save_models": {
-                    "total": 4.7999899834394455e-05,
+                    "total": 5.989987403154373e-05,
                     "count": 1,
-                    "self": 4.7999899834394455e-05
+                    "self": 5.989987403154373e-05
                 }
             }
         }
