@@ -1,0 +1,65 @@
+{
+    "cooking": {
+        "checkpoints": [
+            {
+                "steps": 823056,
+                "file_path": "results\\cooking_run\\cooking\\cooking-823056.onnx",
+                "reward": null,
+                "creation_time": 1748198004.3509207,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-823056.pt"
+                ]
+            },
+            {
+                "steps": 823248,
+                "file_path": "results\\cooking_run\\cooking\\cooking-823248.onnx",
+                "reward": null,
+                "creation_time": 1748198195.9248645,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-823248.pt"
+                ]
+            },
+            {
+                "steps": 823760,
+                "file_path": "results\\cooking_run\\cooking\\cooking-823760.onnx",
+                "reward": null,
+                "creation_time": 1748198388.1287203,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-823760.pt"
+                ]
+            },
+            {
+                "steps": 824016,
+                "file_path": "results\\cooking_run\\cooking\\cooking-824016.onnx",
+                "reward": null,
+                "creation_time": 1748198498.372178,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-824016.pt"
+                ]
+            },
+            {
+                "steps": 867975,
+                "file_path": "results\\cooking_run\\cooking\\cooking-867975.onnx",
+                "reward": -236.0503023713827,
+                "creation_time": 1748200124.808438,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-867975.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 867975,
+            "file_path": "results\\cooking_run\\cooking.onnx",
+            "reward": -236.0503023713827,
+            "creation_time": 1748200124.808438,
+            "auxillary_file_paths": [
+                "results\\cooking_run\\cooking\\cooking-867975.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.1.1+cpu"
+    }
+}

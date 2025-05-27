@@ -3016,7 +3016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: CutRew
-      value: 0.2
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: burnRew
@@ -3024,7 +3024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: cookRew
-      value: 0.01
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: PlateRew
@@ -3035,8 +3035,12 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: UsarRailes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: deliverRew
-      value: 0.01
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: startCutRew
@@ -3044,11 +3048,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: duringCutRew
-      value: 0.1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: cookingPotRew
-      value: 0.01
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: tooMuchFoodRew
@@ -3056,7 +3060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: ChopingTableRew
-      value: 0.05
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: numberOfTooMuchFood
@@ -3064,11 +3068,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7237457580692803893, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: addIngredientToPotRew
-      value: 3
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: MaxStep
       value: 25000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
+      propertyPath: actionDebug
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8513009126616788125, guid: 01967eb45c12cf74abe02821180bf223, type: 3}
       propertyPath: objectRandomizer

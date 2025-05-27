@@ -29,6 +29,10 @@ namespace Undercooked
         public PlayerAgent agent;
 
         PlayerController owner;
+
+        [Header("Entrenamiento")]
+        public bool UsarRailes = true;
+
         void Awake()
         {
             agent = GetComponent<PlayerAgent>();
@@ -137,11 +141,11 @@ namespace Undercooked
         }
 
         // ─────────── añadir recompensa ───────────
-        void Add(float value)
+        public void Add(float value)
         {
             totalReward += value;
             agent?.AddReward(value);         // solo si este jugador es ML‑Agent
-            Debug.Log(totalReward);
+            //Debug.Log(totalReward);
         }
 
     }

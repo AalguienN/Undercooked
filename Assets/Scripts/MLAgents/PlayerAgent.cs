@@ -8,6 +8,7 @@ using Undercooked.Managers;
 using Undercooked.Appliances;
 using System.Linq;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Undercooked
 {
@@ -17,12 +18,12 @@ namespace Undercooked
         public bool actionDebug = false;
 
         // Cool-down lengths (in FixedUpdate steps)
-        private const int DashCdFrames = 20;
+        private const int DashCdFrames = 1000;
         private const int PickCdFrames = 20;
         private const int InteractCdFrames = 10;
 
         // Cool-down counters
-        private int dashCd = 150;
+        private int dashCd = 1000;
         private int pickCd = 20;
         private int interactCd = 1;
 
@@ -52,6 +53,8 @@ namespace Undercooked
         IngredientCrate crate;
         CookingPot pot;
         Hob hob;
+
+        RewardSystem rewardSystem;
         private void Awake()
         {
             player_controller = GetComponent<PlayerController>();
@@ -69,6 +72,8 @@ namespace Undercooked
                         break;
                 }
             }
+
+            rewardSystem = GetComponent<RewardSystem>();
         }
 
         public override void OnEpisodeBegin()
@@ -205,12 +210,14 @@ namespace Undercooked
                 float dot = Vector2.Dot(moveDir.normalized, toTarget.normalized);
                 if (dot >= dotThreshold)
                 {
-                    AddReward(rewardAmount);
+                    rewardSystem.Add(rewardAmount);
                     if (actionDebug)
                         Debug.Log($"[MoveTowards] +{rewardAmount:F4} (dot={dot:F2}) → {targetWorldPos}");
                 }
             }
         }
+
+
 
         private void RewardForMovingAway(Vector3 targetWorldPos, float dotThreshold, float rewardAmount)
         {
@@ -227,10 +234,54 @@ namespace Undercooked
                 float dot = Vector2.Dot(moveDir.normalized, toTarget.normalized);
                 if (dot >= dotThreshold)
                 {
-                    AddReward(rewardAmount);
+                    rewardSystem.Add(rewardAmount);
                     if (actionDebug)
                         Debug.Log($"[MoveTowards] +{rewardAmount:F4} (dot={dot:F2}) → {targetWorldPos}");
                 }
+            }
+        }
+
+        private void RewardForProximity(Vector3 targetPos, float minDistance, float maxDistance, float maxReward, float penalty)
+        {
+            float dist = Vector3.Distance(transform.position, targetPos);
+
+            if (dist <= minDistance)
+            {
+                // Está dentro del rango óptimo: máxima recompensa
+                rewardSystem.Add(maxReward);
+                if (actionDebug)
+                    Debug.Log($"[Proximity] +{maxReward:F4} (dist={dist:F2}) → {targetPos}");
+            }
+            else if (dist <= maxDistance)
+            {
+                // Interpolación lineal entre min y max reward
+                float t = 1 - (dist - minDistance) / (maxDistance - minDistance);
+                float reward = maxReward * t;
+                rewardSystem.Add(reward);
+                if (actionDebug)
+                    Debug.Log($"[Proximity] +{reward:F4} (dist={dist:F2}) → {targetPos}");
+            }
+            else
+            {
+                // Está fuera del rango máximo → penalización
+                rewardSystem.Add(-penalty);
+                if (actionDebug)
+                    Debug.Log($"[Proximity] -{penalty:F4} (dist={dist:F2}) → {targetPos}");
+            }
+        }
+
+
+        private void RewardForLookingAt(Vector3 targetWorldPos, float dotThreshold, float rewardAmount)
+        {
+            Vector3 forward = transform.forward;
+            Vector3 toTarget = (targetWorldPos - transform.position).normalized;
+
+            float dot = Vector3.Dot(forward, toTarget);
+            if (dot >= dotThreshold)
+            {
+                rewardSystem.Add(rewardAmount);
+                if (actionDebug)
+                    Debug.Log($"[LookAt] +{rewardAmount:F4} (dot={dot:F2}) → {targetWorldPos}");
             }
         }
 
@@ -256,8 +307,8 @@ namespace Undercooked
             pickCd = Mathf.Max(0, pickCd - 1);
             interactCd = Mathf.Max(0, interactCd - 1);
 
-            movementInput.x = a.ContinuousActions[0];
-            movementInput.y = a.ContinuousActions[1];
+            //movementInput.x = a.ContinuousActions[0];
+            //movementInput.y = a.ContinuousActions[1];
 
             var d = a.DiscreteActions;
             bool dashPressed = d[0] == 1 && lastDiscrete[0] == 0 && dashCd == 0;
@@ -276,6 +327,41 @@ namespace Undercooked
             lastDiscrete[1] = d[1];
             lastDiscrete[2] = d[2];
 
+            lastDiscrete[3] = d[3];
+
+            switch (d[3])
+            {
+                case 0:
+                    movementInput = new Vector2(0, 1);
+                    break;
+                case 1:
+                    movementInput = new Vector2(1, 1);
+                    break;
+                case 2:
+                    movementInput = new Vector2(1, 0);
+                    break;
+                case 3:
+                    movementInput = new Vector2(1, -1);
+                    break;
+                case 4:
+                    movementInput = new Vector2(0, -1);
+                    break;
+                case 5:
+                    movementInput = new Vector2(-1, -1);
+                    break;
+                case 6:
+                    movementInput = new Vector2(-1, 0);
+                    break;
+                case 7:
+                    movementInput = new Vector2(-1, 1);
+                    break;
+            } 
+
+            if (rewardSystem.UsarRailes) {
+                Railes();
+            }
+        }
+        private void Railes() {
             // 1) Held‐object & status
             var heldObj = player_controller.HeldObject;
             var heldIng = heldObj as Ingredient;
@@ -307,52 +393,79 @@ namespace Undercooked
             int procesedCount = sceneIngredients.Count(ing => ing.Status == IngredientStatus.Processed);
             var procesedIngridients = sceneIngredients.Where(ing => ing.Status == IngredientStatus.Processed).ToList();
 
+
             // 4) Rewards
             //float distToCrate = (transform.position - crate.transform.position).magnitude;
-            if (holdingNothing && boardEmpty && rawCount == 0 && procesedCount == 0)// && distToCrate > 25)
-                RewardForMovingTowards(crate.transform.position, 0.8f, 0.004f);
+
+            //if (holdingNothing && boardEmpty)
+            //{
+            //    RewardForMovingTowards(crate.transform.position, 0.8f, 0.004f);
+            //    RewardForMovingAway(crate.transform.position, -0.5f, -0.006f);
+            //    RewardForLookingAt(crate.transform.position, 0.9f, 0.001f);
+            //    RewardForProximity(crate.transform.position, 1f, 3f, 0.01f, 0.005f);
+            //}
 
             if (holdingNothing && boardEmpty && rawCount == 0 && procesedCount == 0)
-                RewardForMovingAway(crate.transform.position, -0.5f, -0.006f);
+            {
+                RewardForMovingTowards(crate.transform.position, 0.8f, 0.0004f);
+                RewardForMovingAway(crate.transform.position, -0.5f, -0.01f);
+                //RewardForLookingAt(crate.transform.position, 0.9f, 0.0001f);
+                //RewardForProximity(crate.transform.position, 1f, 5f, 0.01f, 0.005f);
+            }
+
 
             // Raw in hand → empty board
             if (isHoldRaw && boardEmpty && procesedCount == 0)
-                RewardForMovingTowards(board.transform.position, 0.8f, 0.00325f);
-            if (isHoldRaw && boardEmpty && procesedCount == 0)
-                RewardForMovingAway(board.transform.position, -0.5f, -0.005f);
+            {
+                RewardForMovingTowards(board.transform.position, 0.8f, 0.1f);
+                RewardForMovingAway(board.transform.position, -0.5f, -0.01f);
+                RewardForLookingAt(board.transform.position, 0.9f, 0.001f);
+                RewardForProximity(board.transform.position, 1f, 5f, 0.01f, 0.008f);
+            }
 
             // Empty-handed → board empty, go to closest raw ingridient
-            var nearestRaw = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Where(ing => ing.Status == IngredientStatus.Raw)
-            .OrderBy(ing => Vector3.SqrMagnitude(ing.transform.position - transform.position)).FirstOrDefault();
+            var nearestRaw = FindObjectsByType<Ingredient>(FindObjectsSortMode.None)
+                .Where(ing => ing.Status == IngredientStatus.Raw)
+                .OrderBy(ing => Vector3.SqrMagnitude(ing.transform.position - transform.position)).FirstOrDefault();
+
 
             if (holdingNothing && boardEmpty && nearestRaw != null && procesedCount == 0)
-                RewardForMovingTowards(nearestRaw.transform.position, 0.8f, 0.0025f);
-            if (holdingNothing && boardEmpty && nearestRaw != null && procesedCount == 0)
-                RewardForMovingAway(nearestRaw.transform.position, -0.5f, -0.004f);
+            {
+                RewardForMovingTowards(nearestRaw.transform.position, 0.8f, 0.000025f);
+                RewardForMovingAway(nearestRaw.transform.position, -0.5f, -0.00004f);
+                //RewardForLookingAt(nearestRaw.transform.position, 0.9f, 0.001f);
+            }
             // Penalty for board already processed
             if (boardHasProcessed)
-                AddReward(-0.001f);
+                rewardSystem.Add(-0.001f);
 
             if (hob?.CurrentPickable == null)
-                AddReward(-0.001f);
+                rewardSystem.Add(-1f);
 
-            if (isHoldProcessed )
-                RewardForMovingTowards(pot.transform.position, 0.8f, 0.001f);
             if (isHoldProcessed)
-                RewardForMovingAway(pot.transform.position, -0.5f, -0.001f);
+            {
+                RewardForMovingTowards(pot.transform.position, 0.8f, 0.03f);
+                RewardForMovingAway(pot.transform.position, -0.5f, -0.015f);
+                RewardForLookingAt(pot.transform.position, 0.9f, 0.001f);
+                RewardForProximity(pot.transform.position, 1f, 5f, 0.01f, 0.01f);
+
+            }
 
             var nearestProc = FindObjectsByType<Ingredient>(FindObjectsSortMode.None).Where(ing => ing.Status == IngredientStatus.Processed)
             .OrderBy(ing => Vector3.SqrMagnitude(ing.transform.position - transform.position)).FirstOrDefault();
 
             if (holdingNothing && !coockingPotFull && nearestProc != null && procesedCount > 0)
+            {
                 RewardForMovingTowards(nearestProc.transform.position, 0.8f, 0.0005f);
-            if (holdingNothing && !coockingPotFull && nearestProc != null && procesedCount > 0)
                 RewardForMovingAway(nearestProc.transform.position, -0.5f, -0.0005f);
+                RewardForLookingAt(nearestProc.transform.position, 0.9f, 0.001f);
+                RewardForProximity(nearestProc.transform.position, 1f, 5f, 0.01f, 0.008f);
+
+            }
 
             var carried = player_controller.HeldObject;
-            if (carried is CookingPot)
-            {
-                AddReward(-0.1f);
+            if (carried is CookingPot) {
+                rewardSystem.Add(-0.1f);
             }
         }
 

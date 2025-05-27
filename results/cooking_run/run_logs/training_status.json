@@ -2,22 +2,58 @@
     "cooking": {
         "checkpoints": [
             {
-                "steps": 200,
-                "file_path": "results\\cooking_run\\cooking\\cooking-200.onnx",
-                "reward": 0.0,
-                "creation_time": 1746053601.5121026,
+                "steps": 2499940,
+                "file_path": "results\\cooking_run\\cooking\\cooking-2499940.onnx",
+                "reward": null,
+                "creation_time": 1748347149.5639112,
                 "auxillary_file_paths": [
-                    "results\\cooking_run\\cooking\\cooking-200.pt"
+                    "results\\cooking_run\\cooking\\cooking-2499940.pt"
+                ]
+            },
+            {
+                "steps": 2613460,
+                "file_path": "results\\cooking_run\\cooking\\cooking-2613460.onnx",
+                "reward": null,
+                "creation_time": 1748348842.481264,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-2613460.pt"
+                ]
+            },
+            {
+                "steps": 2623707,
+                "file_path": "results\\cooking_run\\cooking\\cooking-2623707.onnx",
+                "reward": null,
+                "creation_time": 1748349239.4499276,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-2623707.pt"
+                ]
+            },
+            {
+                "steps": 2962418,
+                "file_path": "results\\cooking_run\\cooking\\cooking-2962418.onnx",
+                "reward": -36.62523540237453,
+                "creation_time": 1748357539.9083793,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-2962418.pt"
+                ]
+            },
+            {
+                "steps": 2974978,
+                "file_path": "results\\cooking_run\\cooking\\cooking-2974978.onnx",
+                "reward": null,
+                "creation_time": 1748358059.631023,
+                "auxillary_file_paths": [
+                    "results\\cooking_run\\cooking\\cooking-2974978.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 200,
+            "steps": 2974978,
             "file_path": "results\\cooking_run\\cooking.onnx",
-            "reward": 0.0,
-            "creation_time": 1746053601.5121026,
+            "reward": null,
+            "creation_time": 1748358059.631023,
             "auxillary_file_paths": [
-                "results\\cooking_run\\cooking\\cooking-200.pt"
+                "results\\cooking_run\\cooking\\cooking-2974978.pt"
             ]
         }
     },
