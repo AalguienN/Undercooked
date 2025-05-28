@@ -412,8 +412,8 @@ namespace Undercooked
             {
                 RewardForMovingTowards(crate.transform.position, 0.8f, 0.0004f);
                 RewardForMovingAway(crate.transform.position, -0.8f, -0.01f);
-                //RewardForLookingAt(crate.transform.position, 0.9f, 0.0001f);
-                //RewardForProximity(crate.transform.position, 1f, 5f, 0.01f, 0.005f);
+                RewardForLookingAt(crate.transform.position, 0.9f, 0.0001f);
+                RewardForProximity(crate.transform.position, 1f, 5f, 0.01f, 0.005f);
             }
 
 
@@ -422,8 +422,8 @@ namespace Undercooked
             {
                 RewardForMovingTowards(board.transform.position, 0.8f, 0.01f);
                 RewardForMovingAway(board.transform.position, -0.8f, -0.01f);
-                RewardForLookingAt(board.transform.position, 0.9f, 0.001f);
-                RewardForProximity(board.transform.position, 1f, 5f, 0.01f, 0.008f);
+                RewardForLookingAt(board.transform.position, 0.9f, 0.0001f);
+                RewardForProximity(board.transform.position, 1f, 8f, 0.01f, 0.01f);
             }
 
             // Empty-handed → board empty, go to closest raw ingridient

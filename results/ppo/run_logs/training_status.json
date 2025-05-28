@@ -61,5 +61,45 @@
                 "results\\ppo\\cookingGrid2\\cookingGrid2-554125.pt"
             ]
         }
+    },
+    "cookingGrid3": {
+        "checkpoints": [
+            {
+                "steps": 0,
+                "file_path": "results\\ppo\\cookingGrid3\\cookingGrid3-0.onnx",
+                "reward": null,
+                "creation_time": 1748417353.2706683,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid3\\cookingGrid3-0.pt"
+                ]
+            },
+            {
+                "steps": 499991,
+                "file_path": "results\\ppo\\cookingGrid3\\cookingGrid3-499991.onnx",
+                "reward": -9.472469788743183,
+                "creation_time": 1748427873.7969909,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid3\\cookingGrid3-499991.pt"
+                ]
+            },
+            {
+                "steps": 749150,
+                "file_path": "results\\ppo\\cookingGrid3\\cookingGrid3-749150.onnx",
+                "reward": null,
+                "creation_time": 1748433303.5698495,
+                "auxillary_file_paths": [
+                    "results\\ppo\\cookingGrid3\\cookingGrid3-749150.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 749150,
+            "file_path": "results\\ppo\\cookingGrid3.onnx",
+            "reward": null,
+            "creation_time": 1748433303.5698495,
+            "auxillary_file_paths": [
+                "results\\ppo\\cookingGrid3\\cookingGrid3-749150.pt"
+            ]
+        }
     }
 }
